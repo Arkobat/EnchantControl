@@ -5,3 +5,15 @@
 
 configVersion: 1.1
 setup: false
+
+
+enchants:
+  99:
+    name: "Curse Of Programming"
+    bukkitName: "PROGRAMMING_CURSE"
+    ver: 1.11
+    disabled: true
+    custom: true
+    maxLevel: 3
+    item: PAPER
+

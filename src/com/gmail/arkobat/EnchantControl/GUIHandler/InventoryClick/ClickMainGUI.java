@@ -26,6 +26,21 @@ public class ClickMainGUI{
                         if (clicked.getItemMeta().getLore().get(0).contains("§a§lStatus: ")) {
                             onClickMainEnchant(clicked, slot);
                         }
+                    } else if (clickType == ClickType.RIGHT) {
+
+                        ItemMeta itemMeta = clicked.getItemMeta();
+                        List<String> lore = new ArrayList<>();
+                        lore.add("§2§lStatus: §c§lCustom");
+                        lore.add("§bLeft-click §ato §2disable");
+                        lore.add("§bRight-click §afor more settings");
+                        lore.add("§aThis will disable your custom settings");
+                        lore.add("§asettings but not delete them!");
+                        itemMeta.setLore(lore);
+                        clicked.setItemMeta(itemMeta);
+                        check.mainGUI.inventory.setItem(slot, clicked);
+                        check.enchantControl.enchantConfigSection.set(check.getEnchant.getIDStingF(itemMeta.getDisplayName()) + ".custom", true);
+
+                        p.openInventory(check.enchantSettingsGUIs.setupInv(check.getEnchant.getIDStingF(check.getEnchant.removeColorCode(clicked.getItemMeta().getDisplayName()))));
                     }
                 }
             }
@@ -38,26 +53,18 @@ public class ClickMainGUI{
         if (itemMeta.getLore().contains("§a§lStatus: §2§lEnabled")) {
             lore.add("§a§lStatus: §4§lDisabled");
             lore.add("§bLeft-click §ato §2enable");
-            check.enchantControl.disabled.add(getID(itemMeta.getDisplayName()));
-            check.enchantControl.toEnchantHandler("add", getID(itemMeta.getDisplayName()));
-            check.enchantControl.writeToConfig("disabled", check.enchantControl.disabled);
-        } else if (itemMeta.getLore().contains("§a§lStatus: §4§lDisabled")) {
+            lore.add("§bRight-click §afor more settings");
+            check.enchantControl.enchantConfigSection.set(check.getEnchant.getIDStingF(itemMeta.getDisplayName()) + ".disabled", true);
+            check.enchantControl.writeToConfig("enchant." + check.getEnchant.getIDStingF(itemMeta.getDisplayName()) + ".disabled", true);
+        } else {
             lore.add("§a§lStatus: §2§lEnabled");
             lore.add("§bLeft-click §ato §cdisable");
-            check.enchantControl.disabled.remove(getID(itemMeta.getDisplayName()));
-            check.enchantControl.toEnchantHandler("remove", getID(itemMeta.getDisplayName()));
-            check.enchantControl.writeToConfig("disabled", check.enchantControl.disabled);
+            lore.add("§bRight-click §afor more settings");
+            check.enchantControl.enchantConfigSection.set(check.getEnchant.getIDStingF(itemMeta.getDisplayName()) + ".disabled", false);
+            check.enchantControl.writeToConfig("enchant." + check.getEnchant.getIDStingF(itemMeta.getDisplayName()) + ".disabled", false);
         }
         itemMeta.setLore(lore);
         clicked.setItemMeta(itemMeta);
         check.mainGUI.inventory.setItem(slot, clicked);
     }
-
-    private String getID(String name) {
-        name = name.replace("§6§l", "");
-        name = name.replace(" ", "_");
-        name = name.toLowerCase();
-        return name;
-    }
-
 }

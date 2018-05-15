@@ -4,6 +4,7 @@ import com.gmail.arkobat.EnchantControl.EnchantControl;
 import com.gmail.arkobat.EnchantControl.EnchantHandler;
 import com.gmail.arkobat.EnchantControl.GUIHandler.SetupGUI;
 import com.gmail.arkobat.EnchantControl.MessageChanger;
+import com.gmail.arkobat.EnchantControl.Utilities.GetEnchant;
 import com.gmail.arkobat.EnchantControl.Utilities.SendPlayerMsg;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -28,13 +29,15 @@ public class Shared extends EventHandler implements Listener{
     private SetupGUI setupGUI;
     private MessageChanger messageChanger;
     private SendPlayerMsg sendPlayerMsg;
+    private GetEnchant getEnchant;
 
-    public Shared(EnchantControl enchantControl, EnchantHandler enchantHandler, SetupGUI setupGUI, MessageChanger messageChanger, SendPlayerMsg sendPlayerMsg) {
+    public Shared(EnchantControl enchantControl, EnchantHandler enchantHandler, SetupGUI setupGUI, MessageChanger messageChanger, SendPlayerMsg sendPlayerMsg, GetEnchant getEnchant) {
         this.enchantControl = enchantControl;
         this.enchantHandler = enchantHandler;
         this.setupGUI = setupGUI;
         this.messageChanger = messageChanger;
         this.sendPlayerMsg = sendPlayerMsg;
+        this.getEnchant = getEnchant;
     }
 
     @org.bukkit.event.EventHandler
@@ -78,7 +81,7 @@ public class Shared extends EventHandler implements Listener{
     public void onEnchant(EnchantItemEvent e) {
         List<Enchantment> enchantList = new ArrayList<>();
         for (Enchantment enchantment : e.getEnchantsToAdd().keySet()) {
-            if (enchantControl.disabledEnchants.contains(enchantment)) {
+            if (enchantControl.enchantConfigSection.contains(getEnchant.getIDStingE(enchantment) + ".disabled") && enchantControl.enchantConfigSection.getBoolean(getEnchant.getIDStingE(enchantment) + ".disabled")) {
                 if (setupGUI.enchant.equals("Cancel")) {
                     sendPlayerMsg.sendPlayerMsg(e.getEnchanter(), "enchantCancel");
                     e.setCancelled(true);

@@ -63,7 +63,7 @@ public class SendPlayerMsg  {
         }
         if (!enchantControl.prefix.equalsIgnoreCase("disabled")) {
             if (!msg.equalsIgnoreCase("disabled")) {
-                msg = msg.replaceAll("%enchantName%", getEnchant.getFriendlyEnchantName(enchantment));
+                msg = msg.replaceAll("%enchantName%", getEnchant.getFriendlyName(enchantment));
                 msg = msg.replaceAll("%item%", itemStack.getType().name());
                 p.sendMessage(ChatColor.translateAlternateColorCodes('&', enchantControl.prefix + " " + msg));
             }

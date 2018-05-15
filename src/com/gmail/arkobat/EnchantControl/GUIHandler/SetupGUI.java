@@ -52,12 +52,12 @@ public class SetupGUI {
         lore.add("§a an item with an illegal enchantment?");
         lore.add("§b Left-click§a to change");
         lore.add("§c§m----------------------------------");
-//        lore.add("§b BookAll §c- §aAll the enchants gets removed,");
+//        lore.add("§b BookAll §c- §aAll the enchantConfigSection gets removed,");
 //        lore.add("§a and added to a book, given to the player");
-//        lore.add("§b BookSingle §c- §aThe illegal enchants gets removed,");
+//        lore.add("§b BookSingle §c- §aThe illegal enchantConfigSection gets removed,");
 //        lore.add("§a and added to a book, given to the player");
-        lore.add("§b RemoveAll §c- §aAll the enchants gets removed.");
-        lore.add("§b RemoveSingle §c- §aThe illegal enchants gets removed.");
+        lore.add("§b RemoveAll §c- §aAll the enchantConfigSection gets removed.");
+        lore.add("§b RemoveSingle §c- §aThe illegal enchantConfigSection gets removed.");
         lore.add(" §c§m----------------------------");
         lore.add(defineActionSetting());
         lore.add(" §c§m----------------------------");
@@ -94,13 +94,13 @@ public class SetupGUI {
 
     private List<String> defineEnchantLore() {
         List<String> lore = new ArrayList<>();
-        lore.add("§a What should happen, if a player enchants");
+        lore.add("§a What should happen, if a player enchantConfigSection");
         lore.add("§a an item with an illegal enchantment?");
         lore.add("§b Left-click§a to change");
         lore.add("§c§m----------------------------------");
-        lore.add("§b Remove §c- §aThe illegal enchants gets ");
+        lore.add("§b Remove §c- §aThe illegal enchantConfigSection gets ");
         lore.add("§a removed, and all the others are applied");
-//        lore.add("§b Book §c- §aThe illegal enchants gets removed.");
+//        lore.add("§b Book §c- §aThe illegal enchantConfigSection gets removed.");
 //        lore.add("§a and given to the player as a book");
         lore.add("§b Cancel §c- §aThe enchant event gets canceled, ");
         lore.add("§a and the player gets a message");
@@ -142,7 +142,7 @@ public class SetupGUI {
         lore.add("§b Left-click§a to change");
         lore.add("§c§m-----------------------");
         lore.add("§b Yes §c- §aEnchanted books will ");
-        lore.add("§a lose illegal enchants stored");
+        lore.add("§a lose illegal enchantConfigSection stored");
         lore.add("§b No §c- §aBooks aren't effected");
         lore.add("§a Make sure you don't return");
         lore.add("§a as book in other settings,");
@@ -212,7 +212,7 @@ public class SetupGUI {
             lore.add(" §aAccepted placeholders: §b%item%");
             lore.add(" §c§m----------------------------");
             lore.add(" §aDefault message:");
-            lore.add(" §3Couldn't enchant %item%. All enchants where illegal");
+            lore.add(" §3Couldn't enchant %item%. All enchantConfigSection where illegal");
             lore.add(" §aYour message:");
             lore.add(ChatColor.translateAlternateColorCodes('&'," &F" + defineMessageSetting("canceled")));
             lore.add(" §c§m----------------------------");
@@ -249,7 +249,7 @@ public class SetupGUI {
                 enchantControl.enchantCancel = path;
                 return path;
             } else {
-                path = "§3Couldn't enchant %item%. All enchants where illegal";
+                path = "§3Couldn't enchant %item%. All enchantConfigSection where illegal";
                 enchantControl.enchantCancel = path;
                 return path;
             }
