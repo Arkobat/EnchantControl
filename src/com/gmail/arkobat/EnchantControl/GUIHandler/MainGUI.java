@@ -27,6 +27,7 @@ public class MainGUI {
             ItemMeta itemMeta = itemStack.getItemMeta();
             itemMeta.setDisplayName("§6§l" + enchantControl.enchantConfigSection.get(key + ".name"));
             itemMeta.setLore(defineLore(key));
+            itemStack.setItemMeta(itemMeta);
             inventory.setItem(loc, itemStack);
             loc++;
         }
@@ -51,7 +52,7 @@ public class MainGUI {
                 lore.add("§bRight-click §afor more settings");
             }
         } else if (enchantControl.enchantConfigSection.getBoolean(id + ".custom")){
-            lore.add("§2§lStatus: §c§lCustom");
+            lore.add("§a§lStatus: §c§lCustom");
             lore.add("§bLeft-click §ato §2disable");
             lore.add("§bRight-click §afor more settings");
             lore.add("§aThis will disable your custom settings");

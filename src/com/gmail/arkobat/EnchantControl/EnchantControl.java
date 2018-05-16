@@ -9,6 +9,7 @@ import com.gmail.arkobat.EnchantControl.GUIHandler.InventoryClick.ClickSetupGUI;
 import com.gmail.arkobat.EnchantControl.GUIHandler.InventoryClick.GUISelector;
 import com.gmail.arkobat.EnchantControl.GUIHandler.MainGUI;
 import com.gmail.arkobat.EnchantControl.GUIHandler.SetupGUI;
+import com.gmail.arkobat.EnchantControl.Utilities.CreateConfig;
 import com.gmail.arkobat.EnchantControl.Utilities.GetEnchant;
 import com.gmail.arkobat.EnchantControl.Utilities.SendPlayerMsg;
 import org.bukkit.Bukkit;
@@ -50,6 +51,7 @@ public class EnchantControl extends JavaPlugin{
     private ClickMainGUI clickMainGUI = new ClickMainGUI(check);
     private ClickSetupGUI clickSetupGUI = new ClickSetupGUI(check);
     private GUISelector guiSelector = new GUISelector(this, clickSetupGUI, clickMainGUI);
+    private CreateConfig createConfig = new CreateConfig(this);
 
 
     @Override
@@ -71,6 +73,7 @@ public class EnchantControl extends JavaPlugin{
 
     private void loadDefaultConfig(){
         enchantConfigSection = getConfig().getConfigurationSection("enchants");
+        createConfig.createStandard();
         prefix = getConfig().getString("prefix");
         ItemMeta itemMeta = fillerItem.getItemMeta();
         itemMeta.setDisplayName("§r");

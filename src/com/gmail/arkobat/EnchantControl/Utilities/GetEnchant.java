@@ -53,7 +53,7 @@ public class GetEnchant {
         return -1;
     }
 
-    public String getIDStingF(String friendlyName) {
+    public String getIDSting(String friendlyName) {
         friendlyName = removeColorCode(friendlyName);
         for (String key : enchantControl.enchantConfigSection.getKeys(false)) {
             if (enchantControl.enchantConfigSection.get(key + ".name").toString().equalsIgnoreCase(friendlyName)) {
@@ -63,7 +63,7 @@ public class GetEnchant {
         return null;
     }
 
-    public String getIDStingE(Enchantment enchantment) {
+    public String getIDSting(Enchantment enchantment) {
         for (String key : enchantControl.enchantConfigSection.getKeys(false)) {
             if (enchantControl.enchantConfigSection.get(key + ".bukkitName").toString().equalsIgnoreCase(enchantment.getName())) {
                 return key;

@@ -5,6 +5,7 @@ import com.gmail.arkobat.EnchantControl.GUIHandler.MainGUI;
 import com.gmail.arkobat.EnchantControl.GUIHandler.SetupGUI;
 import com.gmail.arkobat.EnchantControl.Utilities.GetEnchant;
 import com.gmail.arkobat.EnchantControl.Utilities.SendPlayerMsg;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -29,21 +30,6 @@ public class EnchantHandler {
         this.getEnchant = getEnchant;
 
     }
-/*
-    public void addEnchant(String enchant) {
-        Enchantment enchantment = getBukkitEnchant(enchant);
-        if (!enchantControl.disabledEnchants.contains(enchantment)) {
-            enchantControl.disabledEnchants.add(enchantment);
-        }
-    }
-
-    public void removeEnchant(String enchant) {
-        Enchantment enchantment = getBukkitEnchant(enchant);
-        if (enchantControl.disabledEnchants.contains(enchantment)) {
-            enchantControl.disabledEnchants.remove(enchantment);
-        }
-    }
-*/
 
     public void checkItem(ItemStack itemStack, Player p) {
         if (itemStack != null && itemStack.getType() != Material.AIR) {
@@ -53,7 +39,7 @@ public class EnchantHandler {
             }
             if (itemStack.hasItemMeta() && itemStack.getItemMeta().hasEnchants()) {
                 checkDisabled(itemStack, p);
-                checkMaxLvl(itemStack, p);
+                //checkMaxLvl(itemStack, p);
             }
         }
     }
@@ -61,14 +47,18 @@ public class EnchantHandler {
     private void checkDisabled(ItemStack itemStack, Player p) {
         List<Enchantment> toRemove = new ArrayList<>();
         for (Enchantment enchantment : itemStack.getEnchantments().keySet()) {
-            if (enchantControl.enchantConfigSection.contains(getEnchant.getIDStingF(enchantment.getName() + ".disabled")) && enchantControl.enchantConfigSection.getBoolean(getEnchant.getIDStingF(enchantment.getName() + ".disabled"))) {
-                if (setupGUI.action.equals("RemoveAll")) {
-                    toRemove.addAll(itemStack.getEnchantments().keySet());
-                    break;
-                } else {
-                    toRemove.add(enchantment);
-                }
-
+            Bukkit.getServer().getConsoleSender().sendMessage("Debug: 3");
+           if (enchantControl.enchantConfigSection.contains(getEnchant.getIDSting(enchantment) + ".disabled")) {
+                Bukkit.getServer().getConsoleSender().sendMessage("Debug: 44 - " + getEnchant.getIDSting(enchantment));
+                Bukkit.getServer().getConsoleSender().sendMessage("Enchant = " + enchantment);
+                    if (enchantControl.enchantConfigSection.getBoolean(getEnchant.getIDSting(enchantment) + ".disabled")) {
+                        if (setupGUI.action.equals("RemoveAll")) {
+                            toRemove.addAll(itemStack.getEnchantments().keySet());
+                            break;
+                        } else {
+                            toRemove.add(enchantment);
+                        }
+                    }
             }
         }
         if (!toRemove.isEmpty()) {

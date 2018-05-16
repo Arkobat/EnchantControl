@@ -23,23 +23,21 @@ public class EnchantSettingsGUIs {
 
     public Inventory setupInv(String id) {
         String invID = id.replace("", "§").trim();
-        Inventory inv = Bukkit.createInventory(null, 54, "§b§lEC §a§lSettings" + "§¾§¯§¿" + "§_" + invID);
+        Inventory inv = Bukkit.createInventory(null, 18, "§b§lEC §a§lSettings" + "§¾§¯§¿" + "§_" + invID);
         int[] fillerPlace = {9, 10, 11, 12, 13, 14, 15, 16, 17};
         int[] comingSoonPlace = {1, 2, 3, 4, 5, 6, 7, 8};
         ItemStack comingSoon = defineComingSoonItem();
-
-        inv.setItem(13, defineBackItem());
-        inv.setItem(0, defineMaxLevelItem(id));
-
         for (int loc : comingSoonPlace) {
             inv.setItem(loc, comingSoon);
         }
         for (int loc : fillerPlace) {
             inv.setItem(loc, enchantControl.fillerItem);
         }
-
-
+        inv.setItem(13, defineBackItem());
+        inv.setItem(0, defineMaxLevelItem(id));
+        Bukkit.getServer().getConsoleSender().sendMessage(inv.getTitle().replaceAll("", " "));
         return inv;
+
     }
 
     private ItemStack defineBackItem() {
@@ -57,13 +55,14 @@ public class EnchantSettingsGUIs {
         List<String> comingSoonLore = new ArrayList<>();
         comingSoonLore.add("§b More settings will");
         comingSoonLore.add("§b be added regularly");
+        comingSoonLore.add("§r");
         comingSoonMeta.setLore(comingSoonLore);
         comingSoon.setItemMeta(comingSoonMeta);
         return comingSoon;
     }
 
     private ItemStack defineMaxLevelItem(String id) {
-        ItemStack itemStack = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 8);
+        ItemStack itemStack = new ItemStack(Material.BOOK, 1);
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName("§6§lMax level");
 
