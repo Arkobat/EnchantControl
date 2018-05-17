@@ -26,12 +26,11 @@ public class CommandHandler implements CommandExecutor {
             if (sender instanceof Player) {
                 Player p = (Player) sender;
                 if (p.hasPermission("EnchantControl.admin")) {
-                    if (args.length == 1) {
-                        if (args[0].equalsIgnoreCase("writeConfig")) {
-                            for (String key : enchantControl.enchantConfigSection.getKeys(true)) {
-                                Bukkit.getServer().getConsoleSender().sendMessage(key + ": " + enchantControl.enchantConfigSection.get(key));
-                            }
+                    if (args.length == 1 && args[0].equalsIgnoreCase("writeFullConfig")) {
+                        for (String key : enchantControl.enchantConfigSection.keySet()) {
+                            Bukkit.getServer().getConsoleSender().sendMessage(key + ": " + enchantControl.enchantConfigSection.get(key));
                         }
+                        return true;
                     }
                     if (!enchantControl.setup) {
                         p.openInventory(setupGUI.inventory);

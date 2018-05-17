@@ -22,7 +22,7 @@ public class MainGUI {
 
     public void defineInventory() {
         int loc = 0;
-        for (String key : enchantControl.enchantConfigSection.getKeys(false)) {
+        for (String key : enchantControl.enchantConfigSectionID) {
             ItemStack itemStack = new ItemStack(Material.valueOf(defineItem(key)));
             ItemMeta itemMeta = itemStack.getItemMeta();
             itemMeta.setDisplayName("§6§l" + enchantControl.enchantConfigSection.get(key + ".name"));
@@ -40,8 +40,8 @@ public class MainGUI {
 
     private List<String> defineLore(String id) {
         List<String> lore = new ArrayList<>();
-        if (!enchantControl.enchantConfigSection.contains(id + ".custom")) {
-            if (enchantControl.enchantConfigSection.contains(id + ".disabled") && enchantControl.enchantConfigSection.getBoolean(id + ".disabled")) {
+        if (!enchantControl.enchantConfigSection.containsValue(id + ".custom")) {
+            if (enchantControl.enchantConfigSection.containsValue(id + ".disabled") && Boolean.valueOf(enchantControl.enchantConfigSection.get(id + ".disabled"))) {
                 lore.add("§a§lStatus: §4§lDisabled");
                 lore.add("§bLeft-click §ato §2enable");
                 lore.add("§bRight-click §afor more settings");
@@ -51,7 +51,7 @@ public class MainGUI {
                 lore.add("§bLeft-click §ato §cdisable");
                 lore.add("§bRight-click §afor more settings");
             }
-        } else if (enchantControl.enchantConfigSection.getBoolean(id + ".custom")){
+        } else if (Boolean.valueOf(enchantControl.enchantConfigSection.get(id + ".custom"))) {
             lore.add("§a§lStatus: §c§lCustom");
             lore.add("§bLeft-click §ato §2disable");
             lore.add("§bRight-click §afor more settings");
@@ -62,8 +62,8 @@ public class MainGUI {
     }
 
     private String defineItem(String id) {
-        if (enchantControl.enchantConfigSection.contains(id + ".item")) {
-            return enchantControl.enchantConfigSection.getString(id + ".item");
+        if (enchantControl.enchantConfigSection.containsValue(id + ".item")) {
+            return enchantControl.enchantConfigSection.get(id + ".item");
         } else {
             return "BOOK";
         }

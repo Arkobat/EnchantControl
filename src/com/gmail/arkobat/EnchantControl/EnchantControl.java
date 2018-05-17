@@ -3,10 +3,7 @@ package com.gmail.arkobat.EnchantControl;
 
 import com.gmail.arkobat.EnchantControl.EventHandler.EventHandler;
 import com.gmail.arkobat.EnchantControl.GUIHandler.EnchantSettingsGUIs;
-import com.gmail.arkobat.EnchantControl.GUIHandler.InventoryClick.Check;
-import com.gmail.arkobat.EnchantControl.GUIHandler.InventoryClick.ClickMainGUI;
-import com.gmail.arkobat.EnchantControl.GUIHandler.InventoryClick.ClickSetupGUI;
-import com.gmail.arkobat.EnchantControl.GUIHandler.InventoryClick.GUISelector;
+import com.gmail.arkobat.EnchantControl.GUIHandler.InventoryClick.*;
 import com.gmail.arkobat.EnchantControl.GUIHandler.MainGUI;
 import com.gmail.arkobat.EnchantControl.GUIHandler.SetupGUI;
 import com.gmail.arkobat.EnchantControl.Utilities.CreateConfig;
@@ -14,7 +11,6 @@ import com.gmail.arkobat.EnchantControl.Utilities.GetEnchant;
 import com.gmail.arkobat.EnchantControl.Utilities.SendPlayerMsg;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.Inventory;
@@ -23,6 +19,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class EnchantControl extends JavaPlugin{
@@ -37,7 +34,8 @@ public class EnchantControl extends JavaPlugin{
     public Boolean book; // Not yet in use, but implemented in some parts of the code
     public double version; // The server version
 
-    public ConfigurationSection enchantConfigSection;
+    public List<String> enchantConfigSectionID = new ArrayList<>();
+    public HashMap<String, String> enchantConfigSection = new HashMap<>();
 
     private MainGUI mainGUI = new MainGUI(this);
     private SetupGUI setupGUI = new SetupGUI(this);
@@ -50,7 +48,8 @@ public class EnchantControl extends JavaPlugin{
     private Check check = new Check(this,evt, setupGUI, mainGUI, getEnchant, enchantSettingsGUIs);
     private ClickMainGUI clickMainGUI = new ClickMainGUI(check);
     private ClickSetupGUI clickSetupGUI = new ClickSetupGUI(check);
-    private GUISelector guiSelector = new GUISelector(this, clickSetupGUI, clickMainGUI);
+    private ClickEnchantGUIs clickEnchantGUIs = new ClickEnchantGUIs(check);
+    private GUISelector guiSelector = new GUISelector(this, clickSetupGUI, clickMainGUI, clickEnchantGUIs);
     private CreateConfig createConfig = new CreateConfig(this);
 
 
@@ -72,7 +71,7 @@ public class EnchantControl extends JavaPlugin{
     }
 
     private void loadDefaultConfig(){
-        enchantConfigSection = getConfig().getConfigurationSection("enchants");
+        createConfig.configToSection(getConfig().getConfigurationSection("enchants"));
         createConfig.createStandard();
         prefix = getConfig().getString("prefix");
         ItemMeta itemMeta = fillerItem.getItemMeta();
@@ -107,6 +106,16 @@ public class EnchantControl extends JavaPlugin{
 
     public void writeToConfig(String path, boolean value) {
         getConfig().set(path,value);
+        saveConfig();
+    }
+
+    public void writeToConfig(String path, int value) {
+        getConfig().set(path,value);
+        saveConfig();
+    }
+
+    public void clearConfigPath(String path) {
+        getConfig().set(path,null);
         saveConfig();
     }
 

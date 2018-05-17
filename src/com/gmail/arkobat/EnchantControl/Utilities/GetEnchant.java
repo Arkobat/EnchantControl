@@ -26,37 +26,18 @@ public class GetEnchant {
     }
 
     public String getFriendlyName(Enchantment enchantment) {
-        for (String key : enchantControl.enchantConfigSection.getKeys(false)) {
-            if (enchantControl.enchantConfigSection.getString(key + ".bukkitName").equalsIgnoreCase(enchantment.getName())) {
-                return enchantControl.enchantConfigSection.getString(key + ".name");
+        for (String key : enchantControl.enchantConfigSectionID) {
+            if (enchantControl.enchantConfigSection.get(key + ".bukkitName").equalsIgnoreCase(enchantment.getName())) {
+                return enchantControl.enchantConfigSection.get(key + ".name");
             }
         }
         return null;
-    }
-
-    public String getFriendlyName(String id) {
-        for (String key : enchantControl.enchantConfigSection.getKeys(false)) {
-            if (key.equalsIgnoreCase(id)) {
-                return enchantControl.enchantConfigSection.getString(key + ".name");
-            }
-        }
-        return null;
-    }
-
-    public int getIDInt(String friendlyName) {
-        friendlyName = removeColorCode(friendlyName);
-        for (String key : enchantControl.enchantConfigSection.getKeys(false)) {
-            if (enchantControl.enchantConfigSection.contains(key + "." + friendlyName)) {
-                return Integer.parseInt(key);
-            }
-        }
-        return -1;
     }
 
     public String getIDSting(String friendlyName) {
         friendlyName = removeColorCode(friendlyName);
-        for (String key : enchantControl.enchantConfigSection.getKeys(false)) {
-            if (enchantControl.enchantConfigSection.get(key + ".name").toString().equalsIgnoreCase(friendlyName)) {
+        for (String key : enchantControl.enchantConfigSectionID) {
+            if (enchantControl.enchantConfigSection.get(key + ".name").equalsIgnoreCase(friendlyName)) {
                 return key;
             }
         }
@@ -64,8 +45,8 @@ public class GetEnchant {
     }
 
     public String getIDSting(Enchantment enchantment) {
-        for (String key : enchantControl.enchantConfigSection.getKeys(false)) {
-            if (enchantControl.enchantConfigSection.get(key + ".bukkitName").toString().equalsIgnoreCase(enchantment.getName())) {
+        for (String key : enchantControl.enchantConfigSectionID) {
+            if (enchantControl.enchantConfigSection.get(key + ".bukkitName").equalsIgnoreCase(enchantment.getName())) {
                 return key;
             }
         }

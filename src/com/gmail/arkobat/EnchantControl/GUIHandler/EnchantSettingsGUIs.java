@@ -77,7 +77,7 @@ public class EnchantSettingsGUIs {
         lore.add("§b Shift-left-click §ato set to §b1");
         lore.add("§b Shift-right-click §ato §cdisable");
         lore.add("§c§m-----------------------");
-        lore.add("§a Current max level: §b" + getCurrentMaxLevel(id));
+        lore.add("§a Current max level: §b§l" + getCurrentMaxLevel(id));
         lore.add("§c§m-----------------------");
 
         itemMeta.setLore(lore);
@@ -87,8 +87,8 @@ public class EnchantSettingsGUIs {
     }
 
     private String getCurrentMaxLevel(String id) {
-        if (enchantControl.enchantConfigSection.contains(id + ".maxLevel")) {
-            return Integer.toString(enchantControl.enchantConfigSection.getInt(id + ".maxLevel"));
+        if (enchantControl.enchantConfigSection.containsValue(id + ".maxLevel")) {
+            return enchantControl.enchantConfigSection.get(id + ".maxLevel");
         } else {
             return "Not set";
         }

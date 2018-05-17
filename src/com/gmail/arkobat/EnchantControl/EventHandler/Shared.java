@@ -74,14 +74,18 @@ public class Shared extends EventHandler implements Listener{
                 p.updateInventory();
             }
         }
-        enchantHandler.checkItem(clicked, (Player) e.getWhoClicked());
+        if (!e.isCancelled()) {
+            e.setCancelled(enchantHandler.checkItem(clicked, (Player) e.getWhoClicked()));
+        } else {
+            enchantHandler.checkItem(clicked, (Player) e.getWhoClicked());
+        }
     }
 
     @org.bukkit.event.EventHandler
     public void onEnchant(EnchantItemEvent e) {
         List<Enchantment> enchantList = new ArrayList<>();
         for (Enchantment enchantment : e.getEnchantsToAdd().keySet()) {
-            if (enchantControl.enchantConfigSection.contains(getEnchant.getIDSting(enchantment) + ".disabled") && enchantControl.enchantConfigSection.getBoolean(getEnchant.getIDSting(enchantment) + ".disabled")) {
+            if (enchantControl.enchantConfigSection.containsValue(getEnchant.getIDSting(enchantment) + ".disabled") && Boolean.valueOf(enchantControl.enchantConfigSection.get(getEnchant.getIDSting(enchantment) + ".disabled"))) {
                 if (setupGUI.enchant.equals("Cancel")) {
                     sendPlayerMsg.sendPlayerMsg(e.getEnchanter(), "enchantCancel");
                     e.setCancelled(true);

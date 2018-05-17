@@ -10,8 +10,10 @@ import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class EnchantHandler {
@@ -31,34 +33,30 @@ public class EnchantHandler {
 
     }
 
-    public void checkItem(ItemStack itemStack, Player p) {
+    public boolean checkItem(ItemStack itemStack, Player p) {
         if (itemStack != null && itemStack.getType() != Material.AIR) {
             if (itemStack.getType() == Material.ENCHANTED_BOOK) {
-                //checkBook(itemStack, p);
-                return;
+                return checkBook(itemStack, p) || checkBookMaxLvl(itemStack, p);
             }
             if (itemStack.hasItemMeta() && itemStack.getItemMeta().hasEnchants()) {
-                checkDisabled(itemStack, p);
-                //checkMaxLvl(itemStack, p);
+                return checkDisabled(itemStack, p) || checkMaxLvl(itemStack, p);
             }
         }
+        return false;
     }
 
-    private void checkDisabled(ItemStack itemStack, Player p) {
+    private boolean checkDisabled(ItemStack itemStack, Player p) {
         List<Enchantment> toRemove = new ArrayList<>();
         for (Enchantment enchantment : itemStack.getEnchantments().keySet()) {
-            Bukkit.getServer().getConsoleSender().sendMessage("Debug: 3");
-           if (enchantControl.enchantConfigSection.contains(getEnchant.getIDSting(enchantment) + ".disabled")) {
-                Bukkit.getServer().getConsoleSender().sendMessage("Debug: 44 - " + getEnchant.getIDSting(enchantment));
-                Bukkit.getServer().getConsoleSender().sendMessage("Enchant = " + enchantment);
-                    if (enchantControl.enchantConfigSection.getBoolean(getEnchant.getIDSting(enchantment) + ".disabled")) {
-                        if (setupGUI.action.equals("RemoveAll")) {
-                            toRemove.addAll(itemStack.getEnchantments().keySet());
-                            break;
-                        } else {
-                            toRemove.add(enchantment);
-                        }
+            if (enchantControl.enchantConfigSection.containsKey(getEnchant.getIDSting(enchantment) + ".disabled")) {
+                if (Boolean.valueOf(enchantControl.enchantConfigSection.get(getEnchant.getIDSting(enchantment) + ".disabled"))) {
+                    if (setupGUI.action.equals("RemoveAll")) {
+                        toRemove.addAll(itemStack.getEnchantments().keySet());
+                        break;
+                    } else {
+                        toRemove.add(enchantment);
                     }
+                }
             }
         }
         if (!toRemove.isEmpty()) {
@@ -68,35 +66,103 @@ public class EnchantHandler {
                     sendPlayerMsg.sendPlayerMsg(p, "removedEnchant", enchantment, itemStack);
                 }
             }
+            return true;
         }
+        return false;
     }
 
-    private void checkMaxLvl(ItemStack itemStack, Player p) {
+    private boolean checkMaxLvl(ItemStack itemStack, Player p) {
+        HashMap<Enchantment, Integer> toSet = new HashMap<>();
+        for (Enchantment enchantment : itemStack.getEnchantments().keySet()) {
+            if (enchantControl.enchantConfigSection.containsKey(getEnchant.getIDSting(enchantment) + ".custom")) {
+                if (Boolean.valueOf(enchantControl.enchantConfigSection.get(getEnchant.getIDSting(enchantment) + ".custom"))) {
+                    if (enchantControl.enchantConfigSection.containsKey(getEnchant.getIDSting(enchantment) + ".maxLevel")) {
+                        int maxLevel = Integer.parseInt(enchantControl.enchantConfigSection.get(getEnchant.getIDSting(enchantment) + ".maxLevel"));
+                        if (itemStack.getEnchantmentLevel(enchantment) > maxLevel) {
+                            toSet.put(enchantment, maxLevel);
+                        }
+                    }
+                }
+            }
+        }
+        if (!toSet.isEmpty()) {
+            for (Enchantment enchantment : toSet.keySet()) {
+                itemStack.removeEnchantment(enchantment);
+                itemStack.addEnchantment(enchantment, toSet.get(enchantment));
+                if (p != null) {
+                    sendPlayerMsg.sendPlayerMsg(p, "removedEnchant", enchantment, itemStack);
+                }
+            }
+            return true;
+        }
+        return false;
     }
-/*
-    private void checkBook(ItemStack book, Player p) {
+
+    private boolean checkBookMaxLvl(ItemStack book, Player p) {
+        if (enchantControl.book) {
+            if (book.hasItemMeta()) {
+                EnchantmentStorageMeta meta = (EnchantmentStorageMeta) book.getItemMeta();
+                HashMap<Enchantment, Integer> toSet = new HashMap<>();
+
+                for (Enchantment enchantment : meta.getStoredEnchants().keySet()) {
+                    if (enchantControl.enchantConfigSection.containsKey(getEnchant.getIDSting(enchantment) + ".custom")) {
+                        if (Boolean.valueOf(enchantControl.enchantConfigSection.get(getEnchant.getIDSting(enchantment) + ".custom"))) {
+                            if (enchantControl.enchantConfigSection.containsKey(getEnchant.getIDSting(enchantment) + ".maxLevel")) {
+                                int maxLevel = Integer.parseInt(enchantControl.enchantConfigSection.get(getEnchant.getIDSting(enchantment) + ".maxLevel"));
+                                if (meta.getStoredEnchantLevel(enchantment) > maxLevel) {
+                                    toSet.put(enchantment, maxLevel);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (!toSet.isEmpty()) {
+                    for (Enchantment enchantment : toSet.keySet()) {
+                        meta.removeStoredEnchant(enchantment);
+                        meta.addStoredEnchant(enchantment, toSet.get(enchantment), true);
+                        book.setItemMeta(meta);
+                        if (p != null) {
+                            sendPlayerMsg.sendPlayerMsg(p, "removedEnchant", enchantment, book);
+                        }
+                    }
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean checkBook(ItemStack book, Player p) {
         if (enchantControl.book) {
             if (book.hasItemMeta()) {
                 EnchantmentStorageMeta meta = (EnchantmentStorageMeta) book.getItemMeta();
                 List<Enchantment> toRemove = new ArrayList<>();
                 for (Enchantment enchantment : meta.getStoredEnchants().keySet()) {
-                    if (enchantControl.disabledEnchants.contains(enchantment)) {
-                        toRemove.add(enchantment);
+                    if (enchantControl.enchantConfigSection.containsKey(getEnchant.getIDSting(enchantment) + ".disabled")) {
+                        if (Boolean.valueOf(enchantControl.enchantConfigSection.get(getEnchant.getIDSting(enchantment) + ".disabled"))) {
+                            toRemove.add(enchantment);
+                        }
                     }
                 }
-                for (Enchantment enchantment : toRemove) {
-                    meta.removeStoredEnchant(enchantment);
-                    book.setItemMeta(meta);
-                    if (p != null) {
-                        sendPlayerMsg.sendPlayerMsg(p, "removedEnchant", enchantment, book);
+                if (!toRemove.isEmpty()) {
+                    for (Enchantment enchantment : toRemove) {
+                        meta.removeStoredEnchant(enchantment);
+                        book.setItemMeta(meta);
+                        if (p != null) {
+                            sendPlayerMsg.sendPlayerMsg(p, "removedEnchant", enchantment, book);
+                        }
                     }
-                }
-                if (meta.getStoredEnchants().isEmpty()) {
-                    book.setType(Material.BOOK);
+                    if (meta.getStoredEnchants().isEmpty()) {
+                        book.setType(Material.BOOK);
+                    }
+                    return true;
                 }
             }
         }
+        return false;
     }
-*/
+
+
 }
 
