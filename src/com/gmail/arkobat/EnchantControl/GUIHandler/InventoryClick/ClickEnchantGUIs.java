@@ -64,7 +64,7 @@ public class ClickEnchantGUIs {
 
         itemMeta.setLore(lore);
         clicked.setItemMeta(itemMeta);
-        check.mainGUI.inventory.setItem(slot, clicked);
+       // check.mainGUI.inventory.setItem(slot, clicked);
     }
 
     private String getId(Player p) {

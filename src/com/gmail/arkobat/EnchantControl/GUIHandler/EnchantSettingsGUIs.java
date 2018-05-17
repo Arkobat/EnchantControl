@@ -35,7 +35,6 @@ public class EnchantSettingsGUIs {
         }
         inv.setItem(13, defineBackItem());
         inv.setItem(0, defineMaxLevelItem(id));
-        Bukkit.getServer().getConsoleSender().sendMessage(inv.getTitle().replaceAll("", " "));
         return inv;
 
     }
@@ -67,7 +66,6 @@ public class EnchantSettingsGUIs {
         itemMeta.setDisplayName("§6§lMax level");
 
         List<String> lore = new ArrayList<>();
-        //           lose illegal enchantConfigSection stored
         lore.add("§a Define max allowed level of an enchant");
         lore.add("§a If an item has an enchant with a higher");
         lore.add("§a level, the level will be set to Max Level");
@@ -87,11 +85,7 @@ public class EnchantSettingsGUIs {
     }
 
     private String getCurrentMaxLevel(String id) {
-        if (enchantControl.enchantConfigSection.containsValue(id + ".maxLevel")) {
-            return enchantControl.enchantConfigSection.get(id + ".maxLevel");
-        } else {
-            return "Not set";
-        }
+        return  enchantControl.enchantConfigSection.getOrDefault((id + ".maxLevel"), "Not set");
     }
 
 }

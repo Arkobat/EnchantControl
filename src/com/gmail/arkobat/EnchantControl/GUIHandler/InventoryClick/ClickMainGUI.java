@@ -38,6 +38,8 @@ public class ClickMainGUI{
                             check.mainGUI.inventory.setItem(slot, clicked);
                             check.enchantControl.enchantConfigSection.put(check.getEnchant.getIDSting(itemMeta.getDisplayName()) + ".custom", "true");
                             check.enchantControl.writeToConfig("enchants." + check.getEnchant.getIDSting(itemMeta.getDisplayName()) + ".custom", true);
+                            check.enchantControl.enchantConfigSection.put(check.getEnchant.getIDSting(itemMeta.getDisplayName()) + ".disabled", "false");
+                            check.enchantControl.writeToConfig("enchants." + check.getEnchant.getIDSting(itemMeta.getDisplayName()) + ".disabled", false);
                             p.openInventory(check.enchantSettingsGUIs.setupInv(check.getEnchant.getIDSting(check.getEnchant.removeColorCode(clicked.getItemMeta().getDisplayName()))));
                         }
                     }
