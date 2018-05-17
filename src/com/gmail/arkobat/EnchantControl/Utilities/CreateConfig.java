@@ -14,11 +14,13 @@ public class CreateConfig {
     }
 
     public void configToSection(ConfigurationSection configurationSection) {
-        enchantControl.enchantConfigSectionID.addAll(configurationSection.getKeys(false));
-        for (String key : configurationSection.getKeys(true)) {
-            enchantControl.enchantConfigSection.put(key, configurationSection.getString(key));
+        if (configurationSection != null) {
+            enchantControl.enchantConfigSectionID.addAll(configurationSection.getKeys(false));
+            for (String key : configurationSection.getKeys(true)) {
+                enchantControl.enchantConfigSection.put(key, configurationSection.getString(key));
             }
         }
+    }
 
     public void createStandard() {
         addToConfigSection("0.name", "Protection");

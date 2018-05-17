@@ -85,9 +85,9 @@ public class Shared extends EventHandler implements Listener{
     public void onEnchant(EnchantItemEvent e) {
         List<Enchantment> enchantList = new ArrayList<>();
         for (Enchantment enchantment : e.getEnchantsToAdd().keySet()) {
-            if (enchantControl.enchantConfigSection.containsValue(getEnchant.getIDSting(enchantment) + ".disabled") && Boolean.valueOf(enchantControl.enchantConfigSection.get(getEnchant.getIDSting(enchantment) + ".disabled"))) {
+            if (enchantControl.enchantConfigSection.containsKey(getEnchant.getIDSting(enchantment) + ".disabled") && Boolean.valueOf(enchantControl.enchantConfigSection.get(getEnchant.getIDSting(enchantment) + ".disabled"))) {
                 if (setupGUI.enchant.equals("Cancel")) {
-                    sendPlayerMsg.sendPlayerMsg(e.getEnchanter(), "enchantCancel");
+                    sendPlayerMsg.sendPlayerMsg(e.getEnchanter(), "enchantCancel", e.getItem());
                     e.setCancelled(true);
                     return;
                 }

@@ -3,6 +3,7 @@ package com.gmail.arkobat.EnchantControl.EventHandler;
 import com.gmail.arkobat.EnchantControl.EnchantControl;
 import com.gmail.arkobat.EnchantControl.EnchantHandler;
 import com.gmail.arkobat.EnchantControl.GUIHandler.SetupGUI;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
@@ -35,6 +36,7 @@ public class Version1_12 extends EventHandler implements Listener {
 
     @org.bukkit.event.EventHandler
     public void onAnvilUse(PrepareAnvilEvent e) {
+        Bukkit.getServer().getConsoleSender().sendMessage("Hej");
         enchantHandler.checkItem(e.getResult(), null);
         enchantHandler.checkItem(e.getInventory().getItem(0), null);
         enchantHandler.checkItem(e.getInventory().getItem(1), null);

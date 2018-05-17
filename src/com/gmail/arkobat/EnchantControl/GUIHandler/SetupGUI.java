@@ -212,13 +212,13 @@ public class SetupGUI {
             lore.add(" §aAccepted placeholders: §b%item%");
             lore.add(" §c§m----------------------------");
             lore.add(" §aDefault message:");
-            lore.add(" §3Couldn't enchant %item%. All enchantConfigSection where illegal");
+            lore.add(" §3Couldn't enchant %item%. Some enchants where illegal");
             lore.add(" §aYour message:");
             lore.add(ChatColor.translateAlternateColorCodes('&'," &F" + defineMessageSetting("canceled")));
             lore.add(" §c§m----------------------------");
         } else if (message.equals("remove")) {
-            lore.add(" §aThe message sent when the");
-            lore.add(" §aplugin blocks the enchant event");
+            lore.add(" §aThe message sent when the plugin");
+            lore.add(" §aremoves an enchantment from an item");
             lore.add(" §bLeft-click §ato change");
             lore.add(" §aAccepted placeholders: §b%item%, %enchantName%");
             lore.add(" §c§m----------------------------");
@@ -249,7 +249,7 @@ public class SetupGUI {
                 enchantControl.enchantCancel = path;
                 return path;
             } else {
-                path = "§3Couldn't enchant %item%. All enchantConfigSection where illegal";
+                path = "§3Couldn't enchant %item%. Some enchants where illegal";
                 enchantControl.enchantCancel = path;
                 return path;
             }

@@ -40,8 +40,8 @@ public class MainGUI {
 
     private List<String> defineLore(String id) {
         List<String> lore = new ArrayList<>();
-        if (!enchantControl.enchantConfigSection.containsValue(id + ".custom")) {
-            if (enchantControl.enchantConfigSection.containsValue(id + ".disabled") && Boolean.valueOf(enchantControl.enchantConfigSection.get(id + ".disabled"))) {
+        if (!Boolean.valueOf(enchantControl.enchantConfigSection.get(id + ".custom"))) {
+            if (Boolean.valueOf(enchantControl.enchantConfigSection.get(id + ".disabled"))) {
                 lore.add("§a§lStatus: §4§lDisabled");
                 lore.add("§bLeft-click §ato §2enable");
                 lore.add("§bRight-click §afor more settings");
@@ -51,7 +51,7 @@ public class MainGUI {
                 lore.add("§bLeft-click §ato §cdisable");
                 lore.add("§bRight-click §afor more settings");
             }
-        } else if (Boolean.valueOf(enchantControl.enchantConfigSection.get(id + ".custom"))) {
+        } else {
             lore.add("§a§lStatus: §c§lCustom");
             lore.add("§bLeft-click §ato §2disable");
             lore.add("§bRight-click §afor more settings");
