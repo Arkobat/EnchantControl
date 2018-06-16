@@ -106,7 +106,9 @@ public class Shared extends EventHandler implements Listener{
 
     @org.bukkit.event.EventHandler
     public void onChat(AsyncPlayerChatEvent e) {
-        e.setCancelled(messageChanger.checkMessage(e.getMessage(), e.getPlayer()));
+        if (messageChanger.checkMessage(e.getMessage(), e.getPlayer())) {
+            e.setCancelled(true);
+        }
     }
 
 }

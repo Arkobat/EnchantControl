@@ -5,7 +5,6 @@ import com.gmail.arkobat.EnchantControl.GUIHandler.MainGUI;
 import com.gmail.arkobat.EnchantControl.GUIHandler.SetupGUI;
 import com.gmail.arkobat.EnchantControl.Utilities.GetEnchant;
 import com.gmail.arkobat.EnchantControl.Utilities.SendPlayerMsg;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -165,4 +164,3 @@ public class EnchantHandler {
 
 
 }
-
