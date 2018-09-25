@@ -2,6 +2,7 @@ package com.gmail.arkobat.EnchantControl.GUIHandler.InventoryClick;
 
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
@@ -36,7 +37,7 @@ public class ClickEnchantGUIs {
         String id = getId(player);
         int maxLevel;
         if (lore.contains("§a Current max level: §b§lNot set")) {
-            maxLevel = 1;
+            maxLevel = -1;
         } else {
             maxLevel = Integer.parseInt(lore.get(lore.size() - 2).replace("§a Current max level: §b§l", ""));
         }
@@ -58,7 +59,7 @@ public class ClickEnchantGUIs {
         }
         if (maxLevel != -1) {
             lore.set(lore.size() - 2, "§a Current max level: §b§l" + maxLevel);
-            check.enchantControl.enchantConfigSection.put(id + ".maxLevel", "maxLevel");
+            check.enchantControl.enchantConfigSection.put(id + ".maxLevel", String.valueOf(maxLevel));
             check.enchantControl.writeToConfig("enchants." + id + ".maxLevel", maxLevel);
         }
 
@@ -69,7 +70,8 @@ public class ClickEnchantGUIs {
 
     private String getId(Player p) {
         String[]idSplit = p.getOpenInventory().getTitle().split("§¾§¯§¿§_");
-        return idSplit[1].replaceAll("§", "");
+        int id = Integer.parseInt(idSplit[1].replaceAll("§", ""));
+        return String.valueOf(id);
     }
 }
 

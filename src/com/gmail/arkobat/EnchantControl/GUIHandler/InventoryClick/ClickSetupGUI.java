@@ -110,7 +110,7 @@ public class ClickSetupGUI {
     private void onClickSettingsMessage(ItemStack itemStack, Player p) {
         for (String string : check.enchantControl.msgAdd) {
             if (string.contains(p.getUniqueId().toString())) {
-                p.sendMessage(check.enchantControl.prefix + " §cError: §3Already written up to change a message. You can only change one at a time");
+                check.sendPlayerMsg.sendPlayerMsg(p, "§cError: §3Already written up to change a message. You can only change one at a time");
                 p.closeInventory();
                 return;
             }
@@ -119,28 +119,29 @@ public class ClickSetupGUI {
         if (item.contains("Prefix")) {
             check.enchantControl.msgAdd.add(p.getUniqueId().toString() + ":prefix");
             p.closeInventory();
-            p.sendMessage(check.enchantControl.prefix + "§3 Please write in the chat what you would like the prefix to be");
-            p.sendMessage(check.enchantControl.prefix + "§3 To cancel, write §bcancel §3 - To disable every messages sent to users");
-            p.sendMessage(check.enchantControl.prefix + "§3 write §bdisabled §3- To disable prefix, simple use a colorcode (like &4)");
+            check.sendPlayerMsg.sendPlayerMsg(p, "§3Please write in the chat what you would like the prefix to be");
+            check.sendPlayerMsg.sendPlayerMsg(p, "§3To cancel, write §bcancel");
+            check.sendPlayerMsg.sendPlayerMsg(p, "§3To disable every messages sent to users write §bdisabled");
+            check.sendPlayerMsg.sendPlayerMsg(p, "§3To disable prefix, simple use a colorcode (like &§34)");
         } else if (item.contains("Canceled")) {
             check.enchantControl.msgAdd.add(p.getUniqueId().toString() + ":enchantCancel");
             p.closeInventory();
-            p.sendMessage(check.enchantControl.prefix + "§3 Please write in the chat what you would like the new message to be");
-            p.sendMessage(check.enchantControl.prefix + "§3 Accepted placeholders are: §b%item%");
-            p.sendMessage(check.enchantControl.prefix + "§3 To cancel, write §bcancel §3 - To disable write §bdisabled");
+            check.sendPlayerMsg.sendPlayerMsg(p, "§3Please write in the chat what you would like the new message to be");
+            check.sendPlayerMsg.sendPlayerMsg(p, "§3Accepted placeholders are: §b%item%");
+            check.sendPlayerMsg.sendPlayerMsg(p, "§3To cancel, write §bcancel §3 - To disable write §bdisabled");
         } else if (item.contains("Removed")) {
             check.enchantControl.msgAdd.add(p.getUniqueId().toString() + ":removedEnchant");
             p.closeInventory();
-            p.sendMessage(check.enchantControl.prefix + "§3 Please write in the chat what you would like the new message to be");
-            p.sendMessage(check.enchantControl.prefix + "§3 Accepted placeholders are: §b%item%, %enchantName%");
-            p.sendMessage(check.enchantControl.prefix + "§3 To cancel, write §bcancel §3 - To disable write §bdisabled");
+            check.sendPlayerMsg.sendPlayerMsg(p, "§3Please write in the chat what you would like the new message to be");
+            check.sendPlayerMsg.sendPlayerMsg(p, "§3Accepted placeholders are: §b%item%, %enchantName%");
+            check.sendPlayerMsg.sendPlayerMsg(p, "§3To cancel, write §bcancel §3 - To disable write §bdisabled");
         }
     }
 
     private void onClickSettingsSave(Player p) {
         if (check.setupGUI.action != null && check.setupGUI.enchant != null && check.setupGUI.book != null) {
             if (check.setupGUI.book.equals("Yes") && (check.setupGUI.action.equals("BookSingle") || check.setupGUI.action.equals("BookAll") || check.setupGUI.enchant.equals("Book") )) {
-                p.sendMessage(ChatColor.translateAlternateColorCodes('&', check.enchantControl.prefix + " §3Invalid settings. Please check your settings"));
+                check.sendPlayerMsg.sendPlayerMsg(p, "§3Invalid settings. Please check your settings");
                 return;
             }
             check.enchantControl.setup = true;
@@ -149,7 +150,9 @@ public class ClickSetupGUI {
             check.enchantControl.writeToConfig("book", check.enchantControl.book);
             check.enchantControl.writeToConfig("setup", true);
             p.openInventory(check.mainGUI.inventory);
-        } else p.sendMessage(ChatColor.translateAlternateColorCodes('&', check.enchantControl.prefix + " §3You need define your settings first"));
+        } else {
+            check.sendPlayerMsg.sendPlayerMsg(p, "§3You need define your settings first");
+        }
 
     }
 

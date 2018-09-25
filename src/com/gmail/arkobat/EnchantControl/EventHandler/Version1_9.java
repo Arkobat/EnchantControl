@@ -21,13 +21,16 @@ public class Version1_9 extends EventHandler implements Listener {
 
     @org.bukkit.event.EventHandler
     public void onItemPickup(org.bukkit.event.player.PlayerPickupItemEvent e) {
-        Player p = e.getPlayer();
+        Player p = e.getPlayer() instanceof Player ? e.getPlayer() : null;
         enchantHandler.checkItem(e.getItem().getItemStack(), p);
-        enchantHandler.checkItem(p.getItemInHand(), p);
+        if (p != null) {
+            enchantHandler.checkItem(p.getItemInHand(), p);
+        }
     }
 
     @org.bukkit.event.EventHandler
     public void onItemSwap(PlayerSwapHandItemsEvent e) {
+        Player p = e.getPlayer() instanceof Player ? e.getPlayer() : null;
         enchantHandler.checkItem(e.getMainHandItem(), e.getPlayer());
         enchantHandler.checkItem(e.getOffHandItem(), e.getPlayer());
     }

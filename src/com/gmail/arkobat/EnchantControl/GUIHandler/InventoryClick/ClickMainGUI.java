@@ -73,4 +73,5 @@ public class ClickMainGUI{
         clicked.setItemMeta(itemMeta);
         check.mainGUI.inventory.setItem(slot, clicked);
     }
+
 }

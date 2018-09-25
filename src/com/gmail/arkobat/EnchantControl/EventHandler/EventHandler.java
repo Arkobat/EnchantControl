@@ -41,6 +41,8 @@ public class EventHandler implements Listener {
             Bukkit.getPluginManager().registerEvents(new Version1_11(enchantControl, enchantHandler, setupGUI), enchantControl);
         } else if (version == 1.12) {
             Bukkit.getPluginManager().registerEvents(new Version1_12(enchantControl, enchantHandler, setupGUI), enchantControl);
+        } else if (version == 1.13) {
+            Bukkit.getPluginManager().registerEvents(new Version1_13(enchantControl, enchantHandler, setupGUI), enchantControl);
         }
     }
 

@@ -18,6 +18,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,11 +32,12 @@ public class EnchantControl extends JavaPlugin{
     public String enchantCancel; // Message sent to players when enchanting is canceled
     public String removedEnchant; // Message sent to players when enchant is removed
     public List<String> msgAdd = new ArrayList<>(); // UUID's of players to change messages, with message they want to edit
-    public Boolean book; // Not yet in use, but implemented in some parts of the code
+    public Boolean book; // Determine if enchanted books should be affected
     public double version; // The server version
 
-    public List<String> enchantConfigSectionID = new ArrayList<>();
-    public HashMap<String, String> enchantConfigSection = new HashMap<>();
+    public List<String> enchantConfigSectionID = new ArrayList<>(); // List over all enchant ID's - The same as Bukkit enchant ID, but my own method.
+    public HashMap<String, String> enchantConfigSection = new HashMap<>(); // A map of all settings.
+    public List<String> excluded = new ArrayList<>(); // Items excludes from the plugin. Name, lore etc need to be the same
 
     private MainGUI mainGUI = new MainGUI(this);
     private SetupGUI setupGUI = new SetupGUI(this);
@@ -43,9 +45,9 @@ public class EnchantControl extends JavaPlugin{
     private EnchantSettingsGUIs enchantSettingsGUIs = new EnchantSettingsGUIs(this, getEnchant);
     private SendPlayerMsg sendPlayerMsg = new SendPlayerMsg(this, getEnchant);
     private EnchantHandler enchantHandler = new EnchantHandler(this, mainGUI, setupGUI, sendPlayerMsg, getEnchant);
-    private MessageChanger messageChanger = new MessageChanger(this, setupGUI );
+    private MessageChanger messageChanger = new MessageChanger(this, setupGUI, sendPlayerMsg);
     private EventHandler evt = new EventHandler(this, enchantHandler, setupGUI, messageChanger, sendPlayerMsg, getEnchant);
-    private Check check = new Check(this,evt, setupGUI, mainGUI, getEnchant, enchantSettingsGUIs);
+    private Check check = new Check(this,evt, setupGUI, mainGUI, getEnchant, enchantSettingsGUIs, sendPlayerMsg);
     private ClickMainGUI clickMainGUI = new ClickMainGUI(check);
     private ClickSetupGUI clickSetupGUI = new ClickSetupGUI(check);
     private ClickEnchantGUIs clickEnchantGUIs = new ClickEnchantGUIs(check);
@@ -73,6 +75,7 @@ public class EnchantControl extends JavaPlugin{
     private void loadDefaultConfig(){
         createConfig.configToSection(getConfig().getConfigurationSection("enchants"));
         createConfig.createStandard();
+        excluded = getConfig().getStringList("excluded");
         prefix = getConfig().getString("prefix");
         ItemMeta itemMeta = fillerItem.getItemMeta();
         itemMeta.setDisplayName("§r");
@@ -142,18 +145,33 @@ public class EnchantControl extends JavaPlugin{
 
     private void getVersion() {
         String ver = Bukkit.getVersion();
-        if (ver.contains("1.8")) {
-            version = 1.8;
+        if (ver.contains("1.7")) {
+            version = 1.07;
+            Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c§m----------------------------");
+            Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c          WARNING");
+            Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c");
+            Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c");
+            Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c");
+            Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c");
+            Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c");
+            Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c");
+            Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c          WARNING");
+            Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c§m----------------------------");
+
+        } else if (ver.contains("1.8")) {
+            version = 1.08;
         } else if (ver.contains("1.9")) {
-            version = 1.9;
+            version = 1.09;
         } else if (ver.contains("1.10")) {
             version = 1.10;
         } else if (ver.contains("1.11")) {
             version = 1.11;
         } else if (ver.contains("1.12")) {
             version = 1.12;
+        } else if (ver.contains("1.13")) {
+            version = 1.13;
         } else {
-            Bukkit.getServer().getConsoleSender().sendMessage("§3[§cEnchantControl§3] §cCould not determine version. Assuming you are running higher than §b1.12");
+            Bukkit.getServer().getConsoleSender().sendMessage("§3[§cEnchantControl§3] §cCould not determine version. Assuming you are running higher than §b1.13");
             version = 10.0;
         }
     }

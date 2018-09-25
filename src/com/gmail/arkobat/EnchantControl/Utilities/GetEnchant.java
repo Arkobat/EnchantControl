@@ -2,6 +2,7 @@ package com.gmail.arkobat.EnchantControl.Utilities;
 
 import com.gmail.arkobat.EnchantControl.EnchantControl;
 import com.gmail.arkobat.EnchantControl.GUIHandler.MainGUI;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.enchantments.Enchantment;
 

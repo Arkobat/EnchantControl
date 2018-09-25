@@ -35,14 +35,24 @@ public class EnchantHandler {
 
     public boolean checkItem(ItemStack itemStack, Player p) {
         if (itemStack != null && itemStack.getType() != Material.AIR) {
-            if (itemStack.getType() == Material.ENCHANTED_BOOK) {
-                return checkBook(itemStack, p) || checkBookMaxLvl(itemStack, p);
-            }
-            if (itemStack.hasItemMeta() && itemStack.getItemMeta().hasEnchants()) {
-                return checkDisabled(itemStack, p) || checkMaxLvl(itemStack, p);
+            if (!check64(itemStack)) {
+                if (itemStack.getType() == Material.ENCHANTED_BOOK) {
+                    return checkBook(itemStack, p) || checkBookMaxLvl(itemStack, p);
+                }
+                if (itemStack.hasItemMeta() && itemStack.getItemMeta().hasEnchants()) {
+                    return checkDisabled(itemStack, p) || checkMaxLvl(itemStack, p);
+                }
             }
         }
         return false;
+    }
+
+    private boolean check64 (ItemStack itemStack) {
+        int amount = itemStack.getAmount();
+        itemStack.setAmount(1);
+        String str = itemStack.toString();
+        itemStack.setAmount(amount);
+        return enchantControl.excluded.contains(str);
     }
 
     private boolean checkDisabled(ItemStack itemStack, Player p) {
@@ -103,16 +113,13 @@ public class EnchantHandler {
             if (book.hasItemMeta()) {
                 EnchantmentStorageMeta meta = (EnchantmentStorageMeta) book.getItemMeta();
                 HashMap<Enchantment, Integer> toSet = new HashMap<>();
-
                 for (Enchantment enchantment : meta.getStoredEnchants().keySet()) {
-                    if (enchantControl.enchantConfigSection.containsKey(getEnchant.getIDSting(enchantment) + ".custom")) {
                         if (Boolean.valueOf(enchantControl.enchantConfigSection.get(getEnchant.getIDSting(enchantment) + ".custom"))) {
                             if (enchantControl.enchantConfigSection.containsKey(getEnchant.getIDSting(enchantment) + ".maxLevel")) {
                                 int maxLevel = Integer.parseInt(enchantControl.enchantConfigSection.get(getEnchant.getIDSting(enchantment) + ".maxLevel"));
                                 if (meta.getStoredEnchantLevel(enchantment) > maxLevel) {
                                     toSet.put(enchantment, maxLevel);
                                 }
-                            }
                         }
                     }
                 }

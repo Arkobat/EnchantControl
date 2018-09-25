@@ -17,13 +17,16 @@ public class SendPlayerMsg  {
     }
 
     public void sendPlayerMsg(Player p, String path) {
-        String msg = "disabled";
+        String msg;
         switch (path) {
             case "removedEnchant":
                 msg = enchantControl.removedEnchant;
                 break;
             case "enchantCancel":
                 msg = enchantControl.enchantCancel;
+                break;
+            default:
+                msg = path;
                 break;
         }
         if (!enchantControl.prefix.equalsIgnoreCase("disabled")) {

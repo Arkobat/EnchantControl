@@ -23,15 +23,19 @@ public class MainGUI {
     public void defineInventory() {
         int loc = 0;
         for (String key : enchantControl.enchantConfigSectionID) {
-            ItemStack itemStack = new ItemStack(Material.valueOf(defineItem(key)));
-            ItemMeta itemMeta = itemStack.getItemMeta();
-            itemMeta.setDisplayName("§6§l" + enchantControl.enchantConfigSection.get(key + ".name"));
-            itemMeta.setLore(defineLore(key));
-            itemStack.setItemMeta(itemMeta);
-            inventory.setItem(loc, itemStack);
-            loc++;
+            if (enchantControl.version >= Double.parseDouble(enchantControl.enchantConfigSection.get(key + ".ver"))) {
+                //Bukkit.getConsoleSender().sendMessage(enchantControl.enchantConfigSection.get(key + ".ver"));
+                if (1.13 <= enchantControl.version) {
+                    ItemStack itemStack = new ItemStack(Material.valueOf(defineItem(key)));
+                    ItemMeta itemMeta = itemStack.getItemMeta();
+                    itemMeta.setDisplayName("§6§l" + enchantControl.enchantConfigSection.get(key + ".name"));
+                    itemMeta.setLore(defineLore(key));
+                    itemStack.setItemMeta(itemMeta);
+                    inventory.setItem(loc, itemStack);
+                    loc++;
+                }
+            }
         }
-
         for (int i = 45; i < 54; i++) {
             inventory.setItem(i, enchantControl.fillerItem);
         }

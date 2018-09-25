@@ -1,11 +1,11 @@
 <component name="libraryTable">
   <library name="spigot-1.12.2-R0.1-SNAPSHOT-b1586">
     <CLASSES>
-      <root url="jar://$USER_HOME$/Desktop/MC/00Plugin Kodning/spigot-1.12.jar!/" />
+      <root url="jar://D:/Minecraft/Programmering/spigot-1.12.2-R0.1-SNAPSHOT-b1586.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://$USER_HOME$/Desktop/MC/00Plugin Kodning/spigot-1.12.jar!/" />
+      <root url="jar://D:/Minecraft/Programmering/spigot-1.12.2-R0.1-SNAPSHOT-b1586.jar!/" />
     </SOURCES>
   </library>
 </component>

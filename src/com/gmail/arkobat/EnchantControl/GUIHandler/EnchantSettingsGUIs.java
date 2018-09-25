@@ -22,7 +22,7 @@ public class EnchantSettingsGUIs {
     }
 
     public Inventory setupInv(String id) {
-        String invID = id.replace("", "§").trim();
+        String invID = id.replace("", "").trim();
         Inventory inv = Bukkit.createInventory(null, 18, "§b§lEC §a§lSettings" + "§¾§¯§¿" + "§_" + invID);
         int[] fillerPlace = {9, 10, 11, 12, 13, 14, 15, 16, 17};
         int[] comingSoonPlace = {1, 2, 3, 4, 5, 6, 7, 8};
