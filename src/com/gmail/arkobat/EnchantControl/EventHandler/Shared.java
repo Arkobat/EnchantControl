@@ -6,15 +6,14 @@ import com.gmail.arkobat.EnchantControl.GUIHandler.SetupGUI;
 import com.gmail.arkobat.EnchantControl.MessageChanger;
 import com.gmail.arkobat.EnchantControl.Utilities.GetEnchant;
 import com.gmail.arkobat.EnchantControl.Utilities.SendPlayerMsg;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCreativeEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
@@ -24,7 +23,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Shared extends EventHandler implements Listener{
+public class Shared extends RegisterEvents implements Listener{
 
     private EnchantControl enchantControl;
     private EnchantHandler enchantHandler;
@@ -42,10 +41,10 @@ public class Shared extends EventHandler implements Listener{
         this.getEnchant = getEnchant;
     }
 
-    @org.bukkit.event.EventHandler
+    @EventHandler
     public void onItemHeld(PlayerItemHeldEvent e) {
         Player p = e.getPlayer() instanceof Player ? e.getPlayer() : null;
-        if (enchantControl.version == 1.8) {
+        if (enchantControl.version == 1.08) {
             enchantHandler.checkItem(e.getPlayer().getItemInHand(), p);
         } else {
             enchantHandler.checkItem(e.getPlayer().getInventory().getItemInMainHand(), p);
@@ -56,7 +55,7 @@ public class Shared extends EventHandler implements Listener{
     @org.bukkit.event.EventHandler
     public void interactEvent(PlayerInteractEvent e) {
         Player p = e.getPlayer() instanceof Player ? e.getPlayer() : null;
-        if (enchantControl.version == 1.8) {
+        if (enchantControl.version == 1.08) {
             enchantHandler.checkItem(e.getPlayer().getItemInHand(), p);
         } else {
             enchantHandler.checkItem(e.getPlayer().getInventory().getItemInMainHand(), p);
@@ -64,7 +63,7 @@ public class Shared extends EventHandler implements Listener{
         }
     }
 
-    @org.bukkit.event.EventHandler
+    @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
         Player p = e.getWhoClicked() instanceof Player ? (Player) e.getWhoClicked() : null;
         Inventory inventory = e.getInventory(); // The inventory that was clicked in
@@ -89,7 +88,7 @@ public class Shared extends EventHandler implements Listener{
         }
     }
 
-    @org.bukkit.event.EventHandler
+    @EventHandler
     public void onEnchant(EnchantItemEvent e) {
         Player p = e.getEnchanter() instanceof Player ? e.getEnchanter() : null;
         List<Enchantment> enchantList = new ArrayList<>();
@@ -113,7 +112,7 @@ public class Shared extends EventHandler implements Listener{
         }
     }
 
-    @org.bukkit.event.EventHandler
+    @EventHandler
     public void onChat(AsyncPlayerChatEvent e) {
         if (messageChanger.checkMessage(e.getMessage(), e.getPlayer())) {
             e.setCancelled(true);

@@ -1,21 +1,20 @@
-package com.gmail.arkobat.EnchantControl.GUIHandler.InventoryClick;
+package com.gmail.arkobat.EnchantControl.EventHandler.InventoryClick;
 
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ClickEnchantGUIs {
     Check check;
+    ClickMendingGUI clickMendingGUI;
 
-    public ClickEnchantGUIs(Check check) {
+    public ClickEnchantGUIs(Check check, ClickMendingGUI clickMendingGUI) {
         this.check = check;
+        this.clickMendingGUI = clickMendingGUI;
     }
 
     public void onClickGUIs(ItemStack clicked, int slot, ClickType type, Player player) {
@@ -25,6 +24,8 @@ public class ClickEnchantGUIs {
                     player.openInventory(check.mainGUI.inventory);
                 } else if (clicked.getItemMeta().getDisplayName().equals("§6§lMax level")) {
                     onClickMaxLevel(clicked, slot, type, player);
+                } else if (getId(player).equals("70")) {
+                    clickMendingGUI.checkMending(clicked, type);
                 }
             }
         }
@@ -43,7 +44,7 @@ public class ClickEnchantGUIs {
         }
         if (clickType  == ClickType.LEFT) {
             if (maxLevel < 999) {
-                maxLevel++;
+                maxLevel = (maxLevel < 1) ? 1 : maxLevel + 1;
             }
         } else if (clickType == ClickType.RIGHT) {
             if (maxLevel > 1) {

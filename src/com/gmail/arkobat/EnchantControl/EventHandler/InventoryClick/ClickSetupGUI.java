@@ -1,7 +1,6 @@
-package com.gmail.arkobat.EnchantControl.GUIHandler.InventoryClick;
+package com.gmail.arkobat.EnchantControl.EventHandler.InventoryClick;
 
 
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;

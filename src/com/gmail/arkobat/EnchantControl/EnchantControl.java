@@ -1,9 +1,10 @@
 package com.gmail.arkobat.EnchantControl;
 //https://pastebin.com/TKS7GqT0
 
-import com.gmail.arkobat.EnchantControl.EventHandler.EventHandler;
-import com.gmail.arkobat.EnchantControl.GUIHandler.EnchantSettingsGUIs;
-import com.gmail.arkobat.EnchantControl.GUIHandler.InventoryClick.*;
+import com.gmail.arkobat.EnchantControl.EventHandler.RegisterEvents;
+import com.gmail.arkobat.EnchantControl.GUIHandler.EnchantSettings.MendingGUI;
+import com.gmail.arkobat.EnchantControl.GUIHandler.EnchantSettings.SharedGUI;
+import com.gmail.arkobat.EnchantControl.EventHandler.InventoryClick.*;
 import com.gmail.arkobat.EnchantControl.GUIHandler.MainGUI;
 import com.gmail.arkobat.EnchantControl.GUIHandler.SetupGUI;
 import com.gmail.arkobat.EnchantControl.Utilities.CreateConfig;
@@ -18,7 +19,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +33,7 @@ public class EnchantControl extends JavaPlugin{
     public String removedEnchant; // Message sent to players when enchant is removed
     public List<String> msgAdd = new ArrayList<>(); // UUID's of players to change messages, with message they want to edit
     public Boolean book; // Determine if enchanted books should be affected
+    public Boolean unsafeEnchants;
     public double version; // The server version
 
     public List<String> enchantConfigSectionID = new ArrayList<>(); // List over all enchant ID's - The same as Bukkit enchant ID, but my own method.
@@ -42,15 +43,17 @@ public class EnchantControl extends JavaPlugin{
     private MainGUI mainGUI = new MainGUI(this);
     private SetupGUI setupGUI = new SetupGUI(this);
     private GetEnchant getEnchant = new GetEnchant(this, mainGUI);
-    private EnchantSettingsGUIs enchantSettingsGUIs = new EnchantSettingsGUIs(this, getEnchant);
+    private MendingGUI mendingGUI = new MendingGUI(this);
+    private SharedGUI sharedGUI = new SharedGUI(this, getEnchant, mendingGUI);
     private SendPlayerMsg sendPlayerMsg = new SendPlayerMsg(this, getEnchant);
     private EnchantHandler enchantHandler = new EnchantHandler(this, mainGUI, setupGUI, sendPlayerMsg, getEnchant);
     private MessageChanger messageChanger = new MessageChanger(this, setupGUI, sendPlayerMsg);
-    private EventHandler evt = new EventHandler(this, enchantHandler, setupGUI, messageChanger, sendPlayerMsg, getEnchant);
-    private Check check = new Check(this,evt, setupGUI, mainGUI, getEnchant, enchantSettingsGUIs, sendPlayerMsg);
+    private RegisterEvents evt = new RegisterEvents(this, enchantHandler, setupGUI, messageChanger, sendPlayerMsg, getEnchant);
+    private Check check = new Check(this,evt, setupGUI, mainGUI, getEnchant, sharedGUI, sendPlayerMsg);
     private ClickMainGUI clickMainGUI = new ClickMainGUI(check);
     private ClickSetupGUI clickSetupGUI = new ClickSetupGUI(check);
-    private ClickEnchantGUIs clickEnchantGUIs = new ClickEnchantGUIs(check);
+    private ClickMendingGUI clickMendingGUI = new ClickMendingGUI(check);
+    private ClickEnchantGUIs clickEnchantGUIs = new ClickEnchantGUIs(check, clickMendingGUI);
     private GUISelector guiSelector = new GUISelector(this, clickSetupGUI, clickMainGUI, clickEnchantGUIs);
     private CreateConfig createConfig = new CreateConfig(this);
 
@@ -60,7 +63,7 @@ public class EnchantControl extends JavaPlugin{
         getVersion();
         evt.reqisterEvents(version);
         getCommand("EnchantControl").setExecutor(new CommandHandler(this, mainGUI, setupGUI));
-        Bukkit.getPluginManager().registerEvents(new EventHandler(this, enchantHandler, setupGUI, messageChanger, sendPlayerMsg, getEnchant), this);
+        Bukkit.getPluginManager().registerEvents(new RegisterEvents(this, enchantHandler, setupGUI, messageChanger, sendPlayerMsg, getEnchant), this);
 
         saveDefaultConfig();
         loadDefaultConfig();
@@ -69,6 +72,14 @@ public class EnchantControl extends JavaPlugin{
 
     @Override
     public void onDisable() {
+        for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+            if (p.getOpenInventory().getTopInventory().getTitle().contains("§¾§¯§¿")) {
+                p.closeInventory();
+            }
+        }
+
+        //Bukkit.getServer().getOnlinePlayers().stream().filter(player -> player.getOpenInventory().getTopInventory().getTitle().contains("§¾§¯§¿")).forEach(Player::closeInventory);
+
         Bukkit.getServer().getLogger().info("EnchantControl Disabled");
     }
 
@@ -146,18 +157,16 @@ public class EnchantControl extends JavaPlugin{
     private void getVersion() {
         String ver = Bukkit.getVersion();
         if (ver.contains("1.7")) {
+            Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c§m----------------------------");
+            Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c          WARNING");
+            Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c");
+            Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c       This plugin is not  ");
+            Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c        supported by 1.7   ");
+            Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c           servers!!!      ");
+            Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c");
+            Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c          WARNING");
+            Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c§m----------------------------");
             version = 1.07;
-            Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c§m----------------------------");
-            Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c          WARNING");
-            Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c");
-            Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c");
-            Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c");
-            Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c");
-            Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c");
-            Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c");
-            Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c          WARNING");
-            Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c§m----------------------------");
-
         } else if (ver.contains("1.8")) {
             version = 1.08;
         } else if (ver.contains("1.9")) {
@@ -171,8 +180,16 @@ public class EnchantControl extends JavaPlugin{
         } else if (ver.contains("1.13")) {
             version = 1.13;
         } else {
-            Bukkit.getServer().getConsoleSender().sendMessage("§3[§cEnchantControl§3] §cCould not determine version. Assuming you are running higher than §b1.13");
-            version = 10.0;
+            Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c§m---------------------------------------------");
+            Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c                     WARNING                   ");
+            Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c");
+            Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c            §3[§cEnchantControl§3]             ");
+            Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c          Could not determine version.         ");
+            Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c  Assuming you are running higher than §b1.13  ");
+            Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c");
+            Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c                     WARNING                   ");
+            Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c§m---------------------------------------------");
+            version = 1.13;
         }
     }
 

@@ -1,4 +1,4 @@
-package com.gmail.arkobat.EnchantControl.GUIHandler.InventoryClick;
+package com.gmail.arkobat.EnchantControl.EventHandler.InventoryClick;
 
 import com.gmail.arkobat.EnchantControl.EnchantControl;
 import org.bukkit.Bukkit;
@@ -20,7 +20,7 @@ public class GUISelector {
     }
 
     public void onClick(Inventory inventory, ItemStack clicked, ClickType type, Player player, int slot) {
-        if (inventory.getSize() >= slot && inventory.getItem(slot).equals(clicked)) {
+        if (inventory.getSize() >= slot && inventory.getItem(slot) != null && inventory.getItem(slot).equals(clicked)) {
             if (inventory.getName().equals("§a§lEC §b§lSettings" + enchantControl.GUIIdentifier)) {
                 clickSetupGUI.onClickSettings(clicked, type, player);
             } else if (inventory.getName().equals("§a§lEnchantControl" + enchantControl.GUIIdentifier)) {

@@ -4,9 +4,10 @@ import com.gmail.arkobat.EnchantControl.EnchantControl;
 import com.gmail.arkobat.EnchantControl.EnchantHandler;
 import com.gmail.arkobat.EnchantControl.GUIHandler.SetupGUI;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-public class Version1_8 extends EventHandler implements Listener {
+public class Version1_8 extends RegisterEvents implements Listener {
      EnchantControl enchantControl;
      EnchantHandler enchantHandler;
      SetupGUI setupGUI;
@@ -17,7 +18,7 @@ public class Version1_8 extends EventHandler implements Listener {
         this.setupGUI = setupGUI;
     }
 
-    @org.bukkit.event.EventHandler
+    @EventHandler
     public void onItemPickup(org.bukkit.event.player.PlayerPickupItemEvent e) {
         Player p = e.getPlayer() instanceof Player ? e.getPlayer() : null;
         enchantHandler.checkItem(e.getItem().getItemStack(), p);

@@ -54,4 +54,22 @@ public class GetEnchant {
         return null;
     }
 
+    public int getMaxEnchantLevel(String friendlyName) {
+        for (String key : enchantControl.enchantConfigSectionID) {
+            if (enchantControl.enchantConfigSection.get(key + ".name").equalsIgnoreCase(friendlyName)) {
+                return Integer.parseInt(enchantControl.enchantConfigSection.get(key + ".maxEnchantLevel"));
+            }
+        }
+        return -1;
+    }
+
+    public int getMaxEnchantLevel(Enchantment enchantment) {
+        for (String key : enchantControl.enchantConfigSectionID) {
+            if (enchantControl.enchantConfigSection.get(key + ".bukkitName").equalsIgnoreCase(enchantment.getName())) {
+                return Integer.parseInt(enchantControl.enchantConfigSection.get(key + ".maxEnchantLevel"));
+            }
+        }
+        return -1;
+    }
+
 }

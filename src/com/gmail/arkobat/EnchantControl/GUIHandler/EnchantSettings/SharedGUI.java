@@ -1,4 +1,4 @@
-package com.gmail.arkobat.EnchantControl.GUIHandler;
+package com.gmail.arkobat.EnchantControl.GUIHandler.EnchantSettings;
 
 import com.gmail.arkobat.EnchantControl.EnchantControl;
 import com.gmail.arkobat.EnchantControl.Utilities.GetEnchant;
@@ -11,21 +11,23 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EnchantSettingsGUIs {
+public class SharedGUI {
 
     private final EnchantControl enchantControl;
     private final GetEnchant getEnchant;
+    private final MendingGUI mendingGUI;
 
-    public EnchantSettingsGUIs(EnchantControl enchantControl, GetEnchant getEnchant) {
+    public SharedGUI(EnchantControl enchantControl, GetEnchant getEnchant, MendingGUI mendingGUI) {
         this.enchantControl = enchantControl;
         this.getEnchant = getEnchant;
+        this.mendingGUI = mendingGUI;
     }
 
     public Inventory setupInv(String id) {
         String invID = id.replace("", "").trim();
         Inventory inv = Bukkit.createInventory(null, 18, "§b§lEC §a§lSettings" + "§¾§¯§¿" + "§_" + invID);
         int[] fillerPlace = {9, 10, 11, 12, 13, 14, 15, 16, 17};
-        int[] comingSoonPlace = {1, 2, 3, 4, 5, 6, 7, 8};
+        int[] comingSoonPlace = {0, 1, 2, 3, 4, 5, 6, 7, 8};
         ItemStack comingSoon = defineComingSoonItem();
         for (int loc : comingSoonPlace) {
             inv.setItem(loc, comingSoon);
@@ -35,8 +37,16 @@ public class EnchantSettingsGUIs {
         }
         inv.setItem(13, defineBackItem());
         inv.setItem(0, defineMaxLevelItem(id));
+        inv = checkIndividualSettings(inv, id);
         return inv;
 
+    }
+
+    private Inventory checkIndividualSettings(Inventory inventory, String id) {
+        if (id.equals("70")) {
+            inventory = mendingGUI.applyMendingSettings(inventory);
+        }
+        return inventory;
     }
 
     private ItemStack defineBackItem() {

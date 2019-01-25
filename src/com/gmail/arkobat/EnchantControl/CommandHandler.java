@@ -45,6 +45,10 @@ public class CommandHandler implements CommandExecutor {
     }
 
     private boolean withArgs (String[] args, Player p) {
+        if (args[0].equalsIgnoreCase("debug")) {
+            p.sendMessage("Server version " + enchantControl.version);
+            return true;
+        }
         if (args[0].equalsIgnoreCase("writeFullConfig")) {
             return writeFullConfig();
         } else if (args[0].equalsIgnoreCase("exclude")) {
@@ -62,7 +66,7 @@ public class CommandHandler implements CommandExecutor {
 
     private boolean exclude(Player p) {
         ItemStack itemStack;
-        if (enchantControl.version == 1.8) {
+        if (enchantControl.version == 1.08) {
             itemStack = p.getItemInHand();
         } else {
             itemStack = p.getInventory().getItemInMainHand();
