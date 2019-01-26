@@ -12,6 +12,14 @@ import org.bukkit.event.Listener;
 
 
 public class RegisterEvents implements Listener {
+    public boolean pickupItemEvent = true;
+    public boolean interactEvent = true;
+    public boolean itemHeldEvent = true;
+    public boolean itemSwapEvent = true;
+    public boolean clickItemEvent = true;
+    public boolean enchantEvent = true;
+    public boolean anvilEvent = true;
+
     public RegisterEvents(){}
     private EnchantControl enchantControl;
     private EnchantHandler enchantHandler;

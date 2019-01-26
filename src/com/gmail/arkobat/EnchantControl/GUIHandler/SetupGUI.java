@@ -1,6 +1,7 @@
 package com.gmail.arkobat.EnchantControl.GUIHandler;
 
 import com.gmail.arkobat.EnchantControl.EnchantControl;
+import com.gmail.arkobat.EnchantControl.EventHandler.RegisterEvents;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -14,28 +15,234 @@ import java.util.List;
 public class SetupGUI {
 
     private final EnchantControl enchantControl;
+    private RegisterEvents registerEvents;
 
     public SetupGUI(EnchantControl enchantControl) {
         this.enchantControl = enchantControl;
     }
 
+    public void setRegisterEvents(RegisterEvents registerEvents) {
+        this.registerEvents = registerEvents;
+    }
+
     public String action;
     public String enchant;
     public String book;
-    private int[] fillerPlace = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 17, 18, 19, 20, 21, 23, 24, 25, 26};
+    private int[] fillerPlace = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 17, 18, 22, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35};
 
-    public Inventory inventory = Bukkit.createInventory(null, 27, "§a§lEC §b§lSettings" + "§¾§¯§¿");
+    public Inventory inventory = Bukkit.createInventory(null, 36, "§a§lEC §b§lSettings" + "§¾§¯§¿");
 
     public void defineInventory() {
+        for (int location : fillerPlace) {
+            inventory.setItem(location, enchantControl.fillerItem);
+        }
         defineActionItem();
         defineEnchantItem();
         defineBookItem();
         defineSaveItem();
         defineMessageItems();
-        for (int location : fillerPlace) {
-            inventory.setItem(location, enchantControl.fillerItem);
+
+        definePickupItemEvent();
+        defineInteractEvent();
+        defineItemHeldEvent();
+        if (enchantControl.version >= 1.09) {
+            defineItemSwapEvent();
         }
+        defineClickItemEvent();
+        defineEnchantEvent();
+        defineAnvilEvent();
     }
+
+    private void definePickupItemEvent() {
+        ItemStack itemStack = new ItemStack(Material.REDSTONE_COMPARATOR);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.setDisplayName("§6§lPickup Event");
+
+        List<String> lore = new ArrayList<>();
+        lore.add("§a This event triggers when a player");
+        lore.add("§a pickup items from the ground.");
+        lore.add("§a Should this check be enabled?");
+        lore.add("§b Left-click§a to change");
+        lore.add("§c§m----------------------------------");
+        lore.add("§b Enabled §c- §aThe check is active");
+        lore.add("§b Disabled §c- §aThe plugin does nothing");
+        lore.add(" §c§m----------------------------");
+        if (enchantControl.configContains("Events.ItemSwap") && !enchantControl.getConfigBoolean("Events.Pickup")) {
+            lore.add("     §a§lPickup Event: §b§lDisabled");
+            registerEvents.pickupItemEvent = false;
+        } else {
+            lore.add("     §a§lPickup Event: §b§lEnabled");
+            registerEvents.pickupItemEvent = true;
+        }
+        lore.add(" §c§m----------------------------");
+        itemMeta.setLore(lore);
+        itemStack.setItemMeta(itemMeta);
+        inventory.setItem(19, itemStack);
+    }
+
+    private void defineInteractEvent() {
+        ItemStack itemStack = new ItemStack(Material.REDSTONE_COMPARATOR);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.setDisplayName("§6§lInteract Event");
+
+        List<String> lore = new ArrayList<>();
+        lore.add("§a This event triggers when a player");
+        lore.add("§a interacts with a block. (Clicks a block).");
+        lore.add("§a Should this check be enabled?");
+        lore.add("§b Left-click§a to change");
+        lore.add("§c§m----------------------------------");
+        lore.add("§b Enabled §c- §aThe check is active");
+        lore.add("§b Disabled §c- §aThe plugin does nothing");
+        lore.add(" §c§m----------------------------");
+        if (enchantControl.configContains("Events.ItemSwap") && !enchantControl.getConfigBoolean("Events.Interact")) {
+            lore.add("     §a§lInteract Event: §b§lDisabled");
+            registerEvents.interactEvent = false;
+        } else {
+            lore.add("     §a§lInteract Event: §b§lEnabled");
+            registerEvents.interactEvent = true;
+        }
+        lore.add(" §c§m----------------------------");
+        itemMeta.setLore(lore);
+        itemStack.setItemMeta(itemMeta);
+        inventory.setItem(20, itemStack);
+    }
+
+    private void defineItemHeldEvent() {
+        ItemStack itemStack = new ItemStack(Material.REDSTONE_COMPARATOR);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+       itemMeta.setDisplayName("§6§lItem Held Event");
+
+        List<String> lore = new ArrayList<>();
+        lore.add("§a This event triggers when a player");
+        lore.add("§a equip an item in the main hand.");
+        lore.add("§a Should this check be enabled?");
+        lore.add("§b Left-click§a to change");
+        lore.add("§c§m----------------------------------");
+        lore.add("§b Enabled §c- §aThe check is active");
+        lore.add("§b Disabled §c- §aThe plugin does nothing");
+        lore.add(" §c§m----------------------------");
+        if (enchantControl.configContains("Events.ItemSwap") && !enchantControl.getConfigBoolean("Events.Held")) {
+            lore.add("     §a§lHeld Event: §b§lDisabled");
+            registerEvents.itemHeldEvent = false;
+        } else {
+            lore.add("     §a§lHeld Event: §b§lEnabled");
+            registerEvents.itemHeldEvent = true;
+        }
+        lore.add(" §c§m----------------------------");
+        itemMeta.setLore(lore);
+        itemStack.setItemMeta(itemMeta);
+        inventory.setItem(21, itemStack);
+    }
+
+    private void defineItemSwapEvent() {
+        ItemStack itemStack = new ItemStack(Material.REDSTONE_COMPARATOR);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+       itemMeta.setDisplayName("§6§lSwap Event");
+
+        List<String> lore = new ArrayList<>();
+        lore.add("§a This event triggers when a player");
+        lore.add("§a swap an item to the offhand.");
+        lore.add("§a Should this check be enabled?");
+        lore.add("§b Left-click§a to change");
+        lore.add("§c§m----------------------------------");
+        lore.add("§b Enabled §c- §aThe check is active");
+        lore.add("§b Disabled §c- §aThe plugin does nothing");
+        lore.add(" §c§m----------------------------");
+        if (enchantControl.configContains("Events.ItemSwap") && !enchantControl.getConfigBoolean("Events.ItemSwap")) {
+            lore.add("     §a§lSwap Event: §b§lDisabled");
+            registerEvents.itemSwapEvent = false;
+        } else {
+            lore.add("     §a§lSwap Event: §b§lEnabled");
+            registerEvents.itemSwapEvent = true;
+        }
+        lore.add(" §c§m----------------------------");
+        itemMeta.setLore(lore);
+        itemStack.setItemMeta(itemMeta);
+        inventory.setItem(22, itemStack);
+    }
+
+    private void defineClickItemEvent() {
+        ItemStack itemStack = new ItemStack(Material.REDSTONE_COMPARATOR);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+       itemMeta.setDisplayName("§6§lInventory Click Event");
+
+        List<String> lore = new ArrayList<>();
+        lore.add("§a This event triggers when a player");
+        lore.add("§a clicks an item in an inventory.");
+        lore.add("§a Should this check be enabled?");
+        lore.add("§b Left-click§a to change");
+        lore.add("§c§m----------------------------------");
+        lore.add("§b Enabled §c- §aThe check is active");
+        lore.add("§b Disabled §c- §aThe plugin does nothing");
+        lore.add(" §c§m----------------------------");
+        if (enchantControl.configContains("Events.ItemSwap") && !enchantControl.getConfigBoolean("Events.InventoryClick")) {
+            lore.add("     §a§lInventory Click Event: §b§lDisabled");
+            registerEvents.clickItemEvent = false;
+        } else {
+            lore.add("     §a§lInventory Click Event: §b§lEnabled");
+            registerEvents.clickItemEvent = true;
+        }
+        lore.add(" §c§m----------------------------");
+        itemMeta.setLore(lore);
+        itemStack.setItemMeta(itemMeta);
+        inventory.setItem(23, itemStack);
+    }
+
+    private void defineEnchantEvent() {
+        ItemStack itemStack = new ItemStack(Material.REDSTONE_COMPARATOR);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.setDisplayName("§6§lEnchant Event");
+
+        List<String> lore = new ArrayList<>();
+        lore.add("§a This event triggers when a player");
+        lore.add("§a enchants an item.");
+        lore.add("§a Should this check be enabled?");
+        lore.add("§b Left-click§a to change");
+        lore.add("§c§m----------------------------------");
+        lore.add("§b Enabled §c- §aThe check is active");
+        lore.add("§b Disabled §c- §aThe plugin does nothing");
+        lore.add(" §c§m----------------------------");
+        if (enchantControl.configContains("Events.ItemSwap") && !enchantControl.getConfigBoolean("Events.Enchant")) {
+            lore.add("     §a§lEnchant Event: §b§lDisabled");
+            registerEvents.enchantEvent = false;
+        } else {
+            lore.add("     §a§lEnchant Event: §b§lEnabled");
+            registerEvents.enchantEvent = true;
+        }
+        lore.add(" §c§m----------------------------");
+        itemMeta.setLore(lore);
+        itemStack.setItemMeta(itemMeta);
+        inventory.setItem(24, itemStack);
+    }
+
+    private void defineAnvilEvent() {
+        ItemStack itemStack = new ItemStack(Material.REDSTONE_COMPARATOR);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+       itemMeta.setDisplayName("§6§lAnvil Event");
+
+        List<String> lore = new ArrayList<>();
+        lore.add("§a This event triggers when a player");
+        lore.add("§a uses an anvil.");
+        lore.add("§a Should this check be enabled?");
+        lore.add("§b Left-click§a to change");
+        lore.add("§c§m----------------------------------");
+        lore.add("§b Enabled §c- §aThe check is active");
+        lore.add("§b Disabled §c- §aThe plugin does nothing");
+        lore.add(" §c§m----------------------------");
+        if (enchantControl.configContains("Events.ItemSwap") && !enchantControl.getConfigBoolean("Events.Anvil")) {
+            lore.add("     §a§lAnvil Event: §b§lDisabled");
+            registerEvents.anvilEvent = false;
+        } else {
+            lore.add("     §a§lAnvil Event: §b§lEnabled");
+            registerEvents.anvilEvent = true;
+        }
+        lore.add(" §c§m----------------------------");
+        itemMeta.setLore(lore);
+        itemStack.setItemMeta(itemMeta);
+        inventory.setItem(25, itemStack);
+    }
+
+
 
     private void defineActionItem() {
         ItemStack itemStack = new ItemStack(Material.BOOK_AND_QUILL);
@@ -275,7 +482,7 @@ public class SetupGUI {
         itemMeta.setDisplayName("§6§lSave");
         itemMeta.setLore(defineSaveLore());
         itemStack.setItemMeta(itemMeta);
-        inventory.setItem(22, itemStack);
+        inventory.setItem(31, itemStack);
     }
 
     private List<String> defineSaveLore() {

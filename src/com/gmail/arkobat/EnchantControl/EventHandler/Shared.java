@@ -6,6 +6,7 @@ import com.gmail.arkobat.EnchantControl.GUIHandler.SetupGUI;
 import com.gmail.arkobat.EnchantControl.MessageChanger;
 import com.gmail.arkobat.EnchantControl.Utilities.GetEnchant;
 import com.gmail.arkobat.EnchantControl.Utilities.SendPlayerMsg;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -43,6 +44,9 @@ public class Shared extends RegisterEvents implements Listener{
 
     @EventHandler
     public void onItemHeld(PlayerItemHeldEvent e) {
+        if (!itemHeldEvent) {
+            return;
+        }
         Player p = e.getPlayer() instanceof Player ? e.getPlayer() : null;
         if (enchantControl.version == 1.08) {
             enchantHandler.checkItem(e.getPlayer().getItemInHand(), p);
@@ -54,6 +58,9 @@ public class Shared extends RegisterEvents implements Listener{
 
     @org.bukkit.event.EventHandler
     public void interactEvent(PlayerInteractEvent e) {
+        if (!interactEvent) {
+            return;
+        }
         Player p = e.getPlayer() instanceof Player ? e.getPlayer() : null;
         if (enchantControl.version == 1.08) {
             enchantHandler.checkItem(e.getPlayer().getItemInHand(), p);
@@ -65,6 +72,12 @@ public class Shared extends RegisterEvents implements Listener{
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
+        Bukkit.getServer().getConsoleSender().sendMessage("Debug: InvClick 1");
+        if (!clickItemEvent) {
+            Bukkit.getServer().getConsoleSender().sendMessage("Debug: InvClick 2");
+            return;
+        }
+        Bukkit.getServer().getConsoleSender().sendMessage("Debug: InvClick 3");
         Player p = e.getWhoClicked() instanceof Player ? (Player) e.getWhoClicked() : null;
         Inventory inventory = e.getInventory(); // The inventory that was clicked in
         ItemStack clicked = e.getCurrentItem(); // The item that was clicked
@@ -90,6 +103,9 @@ public class Shared extends RegisterEvents implements Listener{
 
     @EventHandler
     public void onEnchant(EnchantItemEvent e) {
+        if (!enchantEvent) {
+            return;
+        }
         Player p = e.getEnchanter() instanceof Player ? e.getEnchanter() : null;
         List<Enchantment> enchantList = new ArrayList<>();
         for (Enchantment enchantment : e.getEnchantsToAdd().keySet()) {

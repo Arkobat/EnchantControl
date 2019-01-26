@@ -20,6 +20,9 @@ public class Version1_8 extends RegisterEvents implements Listener {
 
     @EventHandler
     public void onItemPickup(org.bukkit.event.player.PlayerPickupItemEvent e) {
+        if (!pickupItemEvent) {
+            return;
+        }
         Player p = e.getPlayer() instanceof Player ? e.getPlayer() : null;
         enchantHandler.checkItem(e.getItem().getItemStack(), p);
         if (p != null) {

@@ -91,6 +91,7 @@ public class EnchantControl extends JavaPlugin{
         ItemMeta itemMeta = fillerItem.getItemMeta();
         itemMeta.setDisplayName("§r");
         fillerItem.setItemMeta(itemMeta);
+        setupGUI.setRegisterEvents(evt);
         setup = getConfig().getBoolean("setup");
         mainGUI.defineInventory();
         setupGUI.defineInventory();
