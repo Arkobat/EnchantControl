@@ -1,6 +1,7 @@
 package com.gmail.arkobat.EnchantControl.EventHandler.InventoryClick;
 
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -38,7 +39,7 @@ public class ClickSetupGUI {
                     if (type == ClickType.LEFT) {
                         onClickSettingsMessage(clicked, player);
                     }
-                } else if (clicked.getType() == Material.REDSTONE_COMPARATOR) {
+                } else if (clicked.getType() == Material.REDSTONE_COMPARATOR || clicked.getType() == Material.REDSTONE_COMPARATOR_OFF) {
                     if (type == ClickType.LEFT) {
                         onClickSettingdEvents(clicked);
                     }

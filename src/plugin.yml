@@ -1,9 +1,8 @@
 name: EnchantControl
-version: 1.2.3
+version: 1.2.4
 author: Arkobat
 main: com.gmail.arkobat.EnchantControl.EnchantControl
 description: Take back control of all enchantments
-softdepend: [CustomEnchants]
 commands:
   EnchantControl:
     description: Opens a GUI to toggle enchants
