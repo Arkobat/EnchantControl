@@ -1,5 +1,6 @@
 package com.gmail.arkobat.EnchantControl.EventHandler;
 
+import com.gmail.arkobat.EnchantControl.Anvil;
 import com.gmail.arkobat.EnchantControl.EnchantControl;
 import com.gmail.arkobat.EnchantControl.EnchantHandler;
 import com.gmail.arkobat.EnchantControl.GUIHandler.SetupGUI;
@@ -10,14 +11,16 @@ import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 
 public class Version1_10 extends RegisterEvents implements Listener {
-    EnchantControl enchantControl;
-    EnchantHandler enchantHandler;
-    SetupGUI setupGUI;
+    private final EnchantControl enchantControl;
+    private final EnchantHandler enchantHandler;
+    private final SetupGUI setupGUI;
+    private final Anvil anvil;
 
-    public Version1_10(EnchantControl enchantControl, EnchantHandler enchantHandler, SetupGUI setupGUI) {
+    public Version1_10(EnchantControl enchantControl, EnchantHandler enchantHandler, SetupGUI setupGUI, Anvil anvil) {
         this.enchantControl = enchantControl;
         this.enchantHandler = enchantHandler;
         this.setupGUI = setupGUI;
+        this.anvil = anvil;
     }
 
     @EventHandler
@@ -46,9 +49,9 @@ public class Version1_10 extends RegisterEvents implements Listener {
         if (!anvilEvent) {
             return;
         }
-        enchantHandler.checkItem(e.getResult(), null);
         enchantHandler.checkItem(e.getInventory().getItem(0), null);
         enchantHandler.checkItem(e.getInventory().getItem(1), null);
+        e.setResult(anvil.getResultItem(e.getInventory().getItem(0), e.getInventory().getItem(1), e.getResult()));
     }
 
 }

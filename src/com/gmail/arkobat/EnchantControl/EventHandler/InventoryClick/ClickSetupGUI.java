@@ -1,6 +1,7 @@
 package com.gmail.arkobat.EnchantControl.EventHandler.InventoryClick;
 
-
+import com.gmail.arkobat.EnchantControl.EnchantControl;
+import com.gmail.arkobat.EnchantControl.EventHandler.RegisterEvents;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -10,7 +11,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.List;
 
 public class ClickSetupGUI {
-    Check check;
+    private final Check check;
+
     public ClickSetupGUI(Check check) {
         this.check = check;
     }
@@ -29,6 +31,10 @@ public class ClickSetupGUI {
                 } else if (clicked.getItemMeta().getDisplayName().equals("§6§lBook")) {
                     if (type == ClickType.LEFT) {
                         onClickSettingsBook(clicked);
+                    }
+                } else if (clicked.getItemMeta().getDisplayName().equals("§6§lUnsafe Enchants")) {
+                    if (type == ClickType.LEFT) {
+                        onClickSettingsUnsafeEnchants(clicked);
                     }
                 } else if (clicked.getItemMeta().getDisplayName().equals("§6§lSave")) {
                     if (type == ClickType.LEFT) {
@@ -98,16 +104,32 @@ public class ClickSetupGUI {
         if (actionLine.contains("Yes")) {
             lore.set(lore.size() - 2, "     §a§lBook: §b§lNo");
             check.setupGUI.book = "No";
-            check.enchantControl.book = false;
+            EnchantControl.BOOK = false;
         } else {
             lore.set(lore.size() - 2, "     §a§lBook: §b§lYes");
             check.setupGUI.book = "Yes";
-            check.enchantControl.book = true;
+            EnchantControl.BOOK = true;
         }
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
         check.setupGUI.inventory.setItem(12, itemStack);
+    }
+
+    private void onClickSettingsUnsafeEnchants(ItemStack itemStack) {
+        List<String> lore = itemStack.getItemMeta().getLore();
+        String actionLine = lore.get(lore.size() - 2);
+        if (actionLine.contains("False")) {
+            lore.set(lore.size() - 2, "     §a§lUnsafe: §b§lTrue");
+            EnchantControl.UNSAFE_ENCHANTS = true;
+        } else {
+            lore.set(lore.size() - 2, "     §a§lUnsafe: §b§lFalse");
+            EnchantControl.UNSAFE_ENCHANTS = false;
+        }
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.setLore(lore);
+        itemStack.setItemMeta(itemMeta);
+        check.setupGUI.inventory.setItem(13, itemStack);
     }
 
     private void onClickSettingsMessage(ItemStack itemStack, Player p) {
@@ -147,113 +169,107 @@ public class ClickSetupGUI {
             String actionLine = lore.get(lore.size() - 2);
             if (actionLine.contains("Disabled")) {
                 lore.set(lore.size() - 2, "     §a§lPickup Event: §b§lEnabled");
-                check.registerEvents.pickupItemEvent = true;
+                RegisterEvents.pickupItemEvent = true;
                 check.enchantControl.writeToConfig("Events.Pickup", true);
             } else {
                 lore.set(lore.size() - 2, "     §a§lPickup Event: §b§lDisabled");
-                check.registerEvents.pickupItemEvent = false;
+                RegisterEvents.pickupItemEvent = false;
                 check.enchantControl.writeToConfig("Events.Pickup", false);
             }
             ItemMeta itemMeta = itemStack.getItemMeta();
             itemMeta.setLore(lore);
             itemStack.setItemMeta(itemMeta);
             check.setupGUI.inventory.setItem(19, itemStack);
-        }
-        else if (itemStack.getItemMeta().getDisplayName().equalsIgnoreCase("§6§lInteract Event")) {
+        } else if (itemStack.getItemMeta().getDisplayName().equalsIgnoreCase("§6§lInteract Event")) {
             List<String> lore = itemStack.getItemMeta().getLore();
             String actionLine = lore.get(lore.size() - 2);
             if (actionLine.contains("Disabled")) {
                 lore.set(lore.size() - 2, "     §a§lInteract Event: §b§lEnabled");
-                check.registerEvents.interactEvent = true;
+                RegisterEvents.interactEvent = true;
                 check.enchantControl.writeToConfig("Events.Interact", true);
             } else {
                 lore.set(lore.size() - 2, "     §a§lInteract Event: §b§lDisabled");
-                check.registerEvents.interactEvent = false;
+                RegisterEvents.interactEvent = false;
                 check.enchantControl.writeToConfig("Events.Interact", false);
             }
             ItemMeta itemMeta = itemStack.getItemMeta();
             itemMeta.setLore(lore);
             itemStack.setItemMeta(itemMeta);
             check.setupGUI.inventory.setItem(20, itemStack);
-        }
-        else if (itemStack.getItemMeta().getDisplayName().equalsIgnoreCase("§6§lItem Held Event")) {
+        } else if (itemStack.getItemMeta().getDisplayName().equalsIgnoreCase("§6§lItem Held Event")) {
             List<String> lore = itemStack.getItemMeta().getLore();
             String actionLine = lore.get(lore.size() - 2);
             if (actionLine.contains("Disabled")) {
                 lore.set(lore.size() - 2, "     §a§lHeld Event: §b§lEnabled");
-                check.registerEvents.itemHeldEvent = true;
+                RegisterEvents.itemHeldEvent = true;
                 check.enchantControl.writeToConfig("Events.Held", true);
             } else {
                 lore.set(lore.size() - 2, "     §a§lHeld Event: §b§lDisabled");
-                check.registerEvents.itemHeldEvent = false;
+                RegisterEvents.itemHeldEvent = false;
                 check.enchantControl.writeToConfig("Events.Held", false);
             }
             ItemMeta itemMeta = itemStack.getItemMeta();
             itemMeta.setLore(lore);
             itemStack.setItemMeta(itemMeta);
             check.setupGUI.inventory.setItem(21, itemStack);
-        }
-        else if (itemStack.getItemMeta().getDisplayName().equalsIgnoreCase("§6§lSwap Event")) {
+        } else if (itemStack.getItemMeta().getDisplayName().equalsIgnoreCase("§6§lSwap Event")) {
             List<String> lore = itemStack.getItemMeta().getLore();
             String actionLine = lore.get(lore.size() - 2);
             if (actionLine.contains("Disabled")) {
                 lore.set(lore.size() - 2, "     §a§lSwap Event: §b§lEnabled");
-                check.registerEvents.itemSwapEvent = true;
+                RegisterEvents.itemSwapEvent = true;
                 check.enchantControl.writeToConfig("Events.ItemSwap", true);
             } else {
                 lore.set(lore.size() - 2, "     §a§lSwap Event: §b§lDisabled");
-                check.registerEvents.itemSwapEvent = false;
+                RegisterEvents.itemSwapEvent = false;
                 check.enchantControl.writeToConfig("Events.ItemSwap", false);
             }
             ItemMeta itemMeta = itemStack.getItemMeta();
             itemMeta.setLore(lore);
             itemStack.setItemMeta(itemMeta);
             check.setupGUI.inventory.setItem(22, itemStack);
-        }
-        else if (itemStack.getItemMeta().getDisplayName().equalsIgnoreCase("§6§lInventory Click Event")) {
+        } else if (itemStack.getItemMeta().getDisplayName().equalsIgnoreCase("§6§lInventory Click Event")) {
             List<String> lore = itemStack.getItemMeta().getLore();
             String actionLine = lore.get(lore.size() - 2);
             if (actionLine.contains("Disabled")) {
                 lore.set(lore.size() - 2, "     §a§lInventory Click Event: §b§lEnabled");
-                check.registerEvents.clickItemEvent = true;
+                RegisterEvents.clickItemEvent = true;
                 check.enchantControl.writeToConfig("Events.InventoryClick", true);
             } else {
                 lore.set(lore.size() - 2, "     §a§lInventory Click Event: §b§lDisabled");
-                check.registerEvents.clickItemEvent = false;
+                RegisterEvents.clickItemEvent = false;
                 check.enchantControl.writeToConfig("Events.InventoryClick", false);
             }
             ItemMeta itemMeta = itemStack.getItemMeta();
             itemMeta.setLore(lore);
             itemStack.setItemMeta(itemMeta);
             check.setupGUI.inventory.setItem(23, itemStack);
-        }
-        else if (itemStack.getItemMeta().getDisplayName().equalsIgnoreCase("§6§lEnchant Event")) {
+        } else if (itemStack.getItemMeta().getDisplayName().equalsIgnoreCase("§6§lEnchant Event")) {
             List<String> lore = itemStack.getItemMeta().getLore();
             String actionLine = lore.get(lore.size() - 2);
             if (actionLine.contains("Disabled")) {
                 lore.set(lore.size() - 2, "     §a§lEnchant Event:: §b§lEnabled");
-                check.registerEvents.enchantEvent = true;
+                RegisterEvents.enchantEvent = true;
                 check.enchantControl.writeToConfig("Events.Enchant", true);
             } else {
                 lore.set(lore.size() - 2, "     §a§lEnchant Event: §b§lDisabled");
-                check.registerEvents.enchantEvent = false;
+                RegisterEvents.enchantEvent = false;
                 check.enchantControl.writeToConfig("Events.Enchant", false);
             }
             ItemMeta itemMeta = itemStack.getItemMeta();
             itemMeta.setLore(lore);
             itemStack.setItemMeta(itemMeta);
             check.setupGUI.inventory.setItem(24, itemStack);
-        }
-        else if (itemStack.getItemMeta().getDisplayName().equalsIgnoreCase("§6§lAnvil Event")) {
+        } else if (itemStack.getItemMeta().getDisplayName().equalsIgnoreCase("§6§lAnvil Event")) {
             List<String> lore = itemStack.getItemMeta().getLore();
             String actionLine = lore.get(lore.size() - 2);
             if (actionLine.contains("Disabled")) {
                 lore.set(lore.size() - 2, "     §a§lAnvil Event: §b§lEnabled");
-                check.registerEvents.anvilEvent = true;
+                RegisterEvents.anvilEvent = true;
                 check.enchantControl.writeToConfig("Events.Anvil", true);
             } else {
                 lore.set(lore.size() - 2, "     §a§lAnvil Event: §b§lDisabled");
-                check.registerEvents.anvilEvent = false;
+                RegisterEvents.anvilEvent = false;
                 check.enchantControl.writeToConfig("Events.Anvil", false);
             }
             ItemMeta itemMeta = itemStack.getItemMeta();
@@ -265,14 +281,15 @@ public class ClickSetupGUI {
 
     private void onClickSettingsSave(Player p) {
         if (check.setupGUI.action != null && check.setupGUI.enchant != null && check.setupGUI.book != null) {
-            if (check.setupGUI.book.equals("Yes") && (check.setupGUI.action.equals("BookSingle") || check.setupGUI.action.equals("BookAll") || check.setupGUI.enchant.equals("Book") )) {
+            if (check.setupGUI.book.equals("Yes") && (check.setupGUI.action.equals("BookSingle") || check.setupGUI.action.equals("BookAll") || check.setupGUI.enchant.equals("Book"))) {
                 check.sendPlayerMsg.sendPlayerMsg(p, "§3Invalid settings. Please check your settings");
                 return;
             }
             check.enchantControl.setup = true;
             check.enchantControl.writeToConfig("action", check.setupGUI.action);
             check.enchantControl.writeToConfig("enchant", check.setupGUI.enchant);
-            check.enchantControl.writeToConfig("book", check.enchantControl.book);
+            check.enchantControl.writeToConfig("book", EnchantControl.BOOK);
+            check.enchantControl.writeToConfig("unsafeEnchant", EnchantControl.UNSAFE_ENCHANTS);
             check.enchantControl.writeToConfig("setup", true);
             p.openInventory(check.mainGUI.inventory);
         } else {

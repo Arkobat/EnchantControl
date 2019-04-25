@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class EnchantControl extends JavaPlugin{
+public class EnchantControl extends JavaPlugin {
 
     public String GUIIdentifier = "§¾§¯§¿"; // Unique characters to identify an inventory from this plugin
     public Boolean setup; // If the first time setup is done
@@ -32,8 +32,8 @@ public class EnchantControl extends JavaPlugin{
     public String enchantCancel; // Message sent to players when enchanting is canceled
     public String removedEnchant; // Message sent to players when enchant is removed
     public List<String> msgAdd = new ArrayList<>(); // UUID's of players to change messages, with message they want to edit
-    public Boolean book; // Determine if enchanted books should be affected
-    public Boolean unsafeEnchants;
+    public static Boolean BOOK; // Determine if enchanted books should be affected
+    public static Boolean UNSAFE_ENCHANTS; // Check if unsafe enchants can be created in an anvil
     public double version; // The server version
 
     public List<String> enchantConfigSectionID = new ArrayList<>(); // List over all enchant ID's - The same as Bukkit enchant ID, but my own method.
@@ -48,22 +48,22 @@ public class EnchantControl extends JavaPlugin{
     private SendPlayerMsg sendPlayerMsg = new SendPlayerMsg(this, getEnchant);
     private EnchantHandler enchantHandler = new EnchantHandler(this, mainGUI, setupGUI, sendPlayerMsg, getEnchant);
     private MessageChanger messageChanger = new MessageChanger(this, setupGUI, sendPlayerMsg);
-    private RegisterEvents evt = new RegisterEvents(this, enchantHandler, setupGUI, messageChanger, sendPlayerMsg, getEnchant);
-    private Check check = new Check(this,evt, setupGUI, mainGUI, getEnchant, sharedGUI, sendPlayerMsg);
+    private CreateConfig createConfig = new CreateConfig(this);
+    private Anvil anvil = new Anvil(this, getEnchant, enchantHandler);
+    private RegisterEvents evt = new RegisterEvents(this, enchantHandler, setupGUI, messageChanger, sendPlayerMsg, getEnchant, anvil);
+    private Check check = new Check(this, evt, setupGUI, mainGUI, getEnchant, sharedGUI, sendPlayerMsg);
     private ClickMainGUI clickMainGUI = new ClickMainGUI(check);
     private ClickSetupGUI clickSetupGUI = new ClickSetupGUI(check);
     private ClickMendingGUI clickMendingGUI = new ClickMendingGUI(check);
     private ClickEnchantGUIs clickEnchantGUIs = new ClickEnchantGUIs(check, clickMendingGUI);
     private GUISelector guiSelector = new GUISelector(this, clickSetupGUI, clickMainGUI, clickEnchantGUIs);
-    private CreateConfig createConfig = new CreateConfig(this);
-
 
     @Override
     public void onEnable() {
         getVersion();
         evt.reqisterEvents(version);
         getCommand("EnchantControl").setExecutor(new CommandHandler(this, mainGUI, setupGUI));
-        Bukkit.getPluginManager().registerEvents(new RegisterEvents(this, enchantHandler, setupGUI, messageChanger, sendPlayerMsg, getEnchant), this);
+        Bukkit.getPluginManager().registerEvents(new RegisterEvents(this, enchantHandler, setupGUI, messageChanger, sendPlayerMsg, getEnchant, anvil), this);
 
         saveDefaultConfig();
         loadDefaultConfig();
@@ -83,7 +83,7 @@ public class EnchantControl extends JavaPlugin{
         Bukkit.getServer().getLogger().info("EnchantControl Disabled");
     }
 
-    private void loadDefaultConfig(){
+    private void loadDefaultConfig() {
         createConfig.configToSection(getConfig().getConfigurationSection("enchants"));
         createConfig.createStandard();
         excluded = getConfig().getStringList("excluded");
@@ -110,27 +110,27 @@ public class EnchantControl extends JavaPlugin{
     }
 
     public void writeToConfig(String path, String value) {
-        getConfig().set(path,value);
+        getConfig().set(path, value);
         saveConfig();
     }
 
     public void writeToConfig(String path, List<String> value) {
-        getConfig().set(path,value);
+        getConfig().set(path, value);
         saveConfig();
     }
 
     public void writeToConfig(String path, boolean value) {
-        getConfig().set(path,value);
+        getConfig().set(path, value);
         saveConfig();
     }
 
     public void writeToConfig(String path, int value) {
-        getConfig().set(path,value);
+        getConfig().set(path, value);
         saveConfig();
     }
 
     public void clearConfigPath(String path) {
-        getConfig().set(path,null);
+        getConfig().set(path, null);
         saveConfig();
     }
 

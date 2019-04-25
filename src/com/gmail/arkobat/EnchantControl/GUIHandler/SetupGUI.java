@@ -39,6 +39,7 @@ public class SetupGUI {
         defineActionItem();
         defineEnchantItem();
         defineBookItem();
+        defineUnsafeEnchantItem();
         defineSaveItem();
         defineMessageItems();
 
@@ -231,17 +232,16 @@ public class SetupGUI {
         lore.add(" §c§m----------------------------");
         if (enchantControl.configContains("Events.ItemSwap") && !enchantControl.getConfigBoolean("Events.Anvil")) {
             lore.add("     §a§lAnvil Event: §b§lDisabled");
-            registerEvents.anvilEvent = false;
+            RegisterEvents.anvilEvent = false;
         } else {
             lore.add("     §a§lAnvil Event: §b§lEnabled");
-            registerEvents.anvilEvent = true;
+            RegisterEvents.anvilEvent = true;
         }
         lore.add(" §c§m----------------------------");
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
         inventory.setItem(25, itemStack);
     }
-
 
 
     private void defineActionItem() {
@@ -364,18 +364,58 @@ public class SetupGUI {
         if (enchantControl.configContains("book")) {
             if (enchantControl.getConfigBoolean("book")) {
                 book = "Yes";
-                enchantControl.book = true;
+                EnchantControl.BOOK = true;
                 return "     §a§lBook: §b§lYes";
             } else if (!enchantControl.getConfigBoolean("book")) {
                 book = "No";
-                enchantControl.book = false;
+                EnchantControl.BOOK = false;
                 return "     §a§lBook: §b§lNo";
             }
         } else {
-            enchantControl.book = false;
+            EnchantControl.BOOK = false;
         }
         return "     §a§lBook: §b§lNot set";
     }
+
+
+
+
+    private void defineUnsafeEnchantItem() {
+        ItemStack itemStack = new ItemStack(Material.ANVIL);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.setDisplayName("§6§lUnsafe Enchants");
+        itemMeta.setLore(defineUnsafeEnchantLore());
+        itemStack.setItemMeta(itemMeta);
+        inventory.setItem(13, itemStack);
+    }
+
+    private List<String> defineUnsafeEnchantLore() {
+        List<String> lore = new ArrayList<>();
+        lore.add("§a Should a player be allowed to create");
+        lore.add("§a illegal enchants with an anvil?.");
+        lore.add("§a This means they can keep combining");
+        lore.add("§a items to get a higher level, ignoring");
+        lore.add("§a the vanilla max enchant level.");
+        lore.add("§b Left-click§a to change");
+        lore.add("§c§m----------------------------------");
+        lore.add("§b True §c- §aUnsafe enchants are added");
+        lore.add("§b False §c- §aVanilla enchant rules are used");
+        lore.add(" §c§m----------------------------");
+        lore.add(defineUnsafeEnchantSetting());
+        lore.add(" §c§m----------------------------");
+        return lore;
+    }
+
+    private String defineUnsafeEnchantSetting() {
+        if (enchantControl.configContains("unsafeEnchant")) {
+            if (enchantControl.getConfigBoolean("unsafeEnchant")) {
+                EnchantControl.UNSAFE_ENCHANTS = true;
+                return "     §a§lUnsafe: §b§lTrue";
+            }
+        }
+        return "     §a§lUnsafe: §b§lFalse";
+    }
+
 
     public void defineMessageItems() {
         ItemStack prefix = new ItemStack(Material.PAPER);

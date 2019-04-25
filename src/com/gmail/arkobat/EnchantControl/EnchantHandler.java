@@ -146,7 +146,7 @@ public class EnchantHandler {
     }
 
     private boolean checkBookMaxLvl(ItemStack book, Player p) {
-        if (enchantControl.book) {
+        if (EnchantControl.BOOK) {
             if (book.hasItemMeta()) {
                 EnchantmentStorageMeta meta = (EnchantmentStorageMeta) book.getItemMeta();
                 HashMap<Enchantment, Integer> toSet = new HashMap<>();
@@ -178,7 +178,7 @@ public class EnchantHandler {
     }
 
     private boolean checkBook(ItemStack book, Player p) {
-        if (enchantControl.book) {
+        if (EnchantControl.BOOK) {
             if (book.hasItemMeta()) {
                 EnchantmentStorageMeta meta = (EnchantmentStorageMeta) book.getItemMeta();
                 List<Enchantment> toRemove = new ArrayList<>();

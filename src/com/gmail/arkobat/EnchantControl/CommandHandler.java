@@ -7,6 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -24,27 +25,28 @@ public class CommandHandler implements CommandExecutor {
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("EnchantControl")) {
-            if (sender instanceof Player) {
-                Player p = (Player) sender;
-                if (p.hasPermission("EnchantControl.admin")) {
-                    if (args.length >= 1 && withArgs(args, p)) {
-                        return true;
-                    }
-                    if (!enchantControl.setup) {
-                        p.openInventory(setupGUI.inventory);
-                    } else {
-                        p.openInventory(mainGUI.inventory);
-                    }
-                }
+        if (!cmd.getName().equalsIgnoreCase("EnchantControl")) {
+            return true;
+        }
+        if (!(sender instanceof Player)) {
+            sender.sendMessage(enchantControl.prefix + " §3This command can only be executed ingame");
+            return true;
+        }
+        Player p = (Player) sender;
+        if (p.hasPermission("EnchantControl.admin")) {
+            if (args.length >= 1 && withArgs(args, p)) {
+                return true;
+            }
+            if (!enchantControl.setup) {
+                p.openInventory(setupGUI.inventory);
             } else {
-                sender.sendMessage(enchantControl.prefix + " §3This command can only be executed ingame");
+                p.openInventory(mainGUI.inventory);
             }
         }
         return true;
     }
 
-    private boolean withArgs (String[] args, Player p) {
+    private boolean withArgs(String[] args, Player p) {
         if (args[0].equalsIgnoreCase("debug")) {
             p.sendMessage("Server version " + enchantControl.version);
             return true;
@@ -74,7 +76,7 @@ public class CommandHandler implements CommandExecutor {
         if (itemStack != null && itemStack.getType() != Material.AIR) {
             int amount = itemStack.getAmount();
             itemStack.setAmount(1);
-            String str =itemStack.toString();
+            String str = itemStack.toString();
             itemStack.setAmount(amount);
             if (!enchantControl.excluded.contains(str)) {
                 enchantControl.excluded.add(str);
