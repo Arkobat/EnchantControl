@@ -44,7 +44,7 @@ public class ClickSetupGUI {
                     if (type == ClickType.LEFT) {
                         onClickSettingsMessage(clicked, player);
                     }
-                } else if (clicked.getType() == Material.REDSTONE_COMPARATOR) {
+                } else if (clicked.getType() == Material.REDSTONE_COMPARATOR || clicked.getType() == Material.REDSTONE_COMPARATOR_OFF) {
                     if (type == ClickType.LEFT) {
                         onClickSettingdEvents(clicked);
                     }

@@ -89,6 +89,9 @@ public class EnchantHandler {
     }
 
     private boolean checkDisabled(ItemStack itemStack, Player p) {
+        if (setupGUI.action == null) {
+            return false;
+        }
         List<Enchantment> toRemove = new ArrayList<>();
         for (Enchantment enchantment : itemStack.getEnchantments().keySet()) {
             if (enchantControl.enchantConfigSection.containsKey(getEnchant.getIDSting(enchantment) + ".disabled")) {

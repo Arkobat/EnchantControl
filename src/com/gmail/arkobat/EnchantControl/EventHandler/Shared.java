@@ -72,6 +72,12 @@ public class Shared extends RegisterEvents implements Listener{
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
+        Bukkit.getServer().getConsoleSender().sendMessage("Debug: InvClick 1");
+        if (!clickItemEvent) {
+            Bukkit.getServer().getConsoleSender().sendMessage("Debug: InvClick 2");
+            return;
+        }
+        Bukkit.getServer().getConsoleSender().sendMessage("Debug: InvClick 3");
         Player p = e.getWhoClicked() instanceof Player ? (Player) e.getWhoClicked() : null;
         Inventory inventory = e.getInventory(); // The inventory that was clicked in
         ItemStack clicked = e.getCurrentItem(); // The item that was clicked
@@ -83,20 +89,18 @@ public class Shared extends RegisterEvents implements Listener{
                 enchantControl.onClick(inventory, clicked, type, p, slot);
                 if (p != null) {p.updateInventory();}
             }
-        }
-        if (!clickItemEvent) {
             return;
         }
-            if (!e.isCancelled()) {
-                if (type != ClickType.DROP) {
-                    e.setCancelled(enchantHandler.checkItem(clicked, p));
-                } else {
-                    enchantHandler.checkItem(clicked, p);
-                }
+        if (!e.isCancelled()) {
+            if (type != ClickType.DROP) {
+                e.setCancelled(enchantHandler.checkItem(clicked, p));
             } else {
                 enchantHandler.checkItem(clicked, p);
             }
+        } else {
+            enchantHandler.checkItem(clicked, p);
         }
+    }
 
     @EventHandler
     public void onEnchant(EnchantItemEvent e) {
