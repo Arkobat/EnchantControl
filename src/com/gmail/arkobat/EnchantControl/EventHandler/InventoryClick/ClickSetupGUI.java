@@ -3,6 +3,7 @@ package com.gmail.arkobat.EnchantControl.EventHandler.InventoryClick;
 import com.gmail.arkobat.EnchantControl.EnchantControl;
 import com.gmail.arkobat.EnchantControl.EventHandler.RegisterEvents;
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.Main;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
@@ -65,13 +66,13 @@ public class ClickSetupGUI {
 //        } else
         if (actionLine.contains("RemoveAll")) {
             lore.set(lore.size() - 2, "     §a§lAction: §b§lRemoveSingle");
-            check.setupGUI.action = "RemoveSingle";
+            EnchantControl.ACTION = "RemoveSingle";
 //        } else if (actionLine.contains("RemoveSingle")) {
 //            lore.set(lore.size() - 2, "     §a§lAction: §b§lBookAll");
 //            setupGUI.action = "BookAll";
         } else {
             lore.set(lore.size() - 2, "     §a§lAction: §b§lRemoveAll");
-            check.setupGUI.action = "RemoveAll";
+            EnchantControl.ACTION = "RemoveAll";
         }
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setLore(lore);
@@ -84,13 +85,13 @@ public class ClickSetupGUI {
         String actionLine = lore.get(lore.size() - 2);
         if (actionLine.contains("Cancel")) {
             lore.set(lore.size() - 2, "     §a§lAction: §b§lRemove");
-            check.setupGUI.enchant = "Remove";
+            EnchantControl.ENCHANT = "Remove";
             //       } else if (actionLine.contains("Remove")) {
             //           lore.set(lore.size() - 2, "     §a§lAction: §b§lBook");
             //          check.setupGUI.enchant = "Book";
         } else {
             lore.set(lore.size() - 2, "     §a§lAction: §b§lCancel");
-            check.setupGUI.enchant = "Cancel";
+            EnchantControl.ENCHANT = "Cancel";
         }
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setLore(lore);
@@ -103,12 +104,12 @@ public class ClickSetupGUI {
         String actionLine = lore.get(lore.size() - 2);
         if (actionLine.contains("Yes")) {
             lore.set(lore.size() - 2, "     §a§lBook: §b§lNo");
-            check.setupGUI.book = "No";
-            EnchantControl.BOOK = false;
+            EnchantControl.BOOK = "No";
+            EnchantControl.AFFECT_BOOKS = false;
         } else {
             lore.set(lore.size() - 2, "     §a§lBook: §b§lYes");
-            check.setupGUI.book = "Yes";
-            EnchantControl.BOOK = true;
+            EnchantControl.BOOK = "Yes";
+            EnchantControl.AFFECT_BOOKS = true;
         }
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setLore(lore);
@@ -280,14 +281,14 @@ public class ClickSetupGUI {
     }
 
     private void onClickSettingsSave(Player p) {
-        if (check.setupGUI.action != null && check.setupGUI.enchant != null && check.setupGUI.book != null) {
-            if (check.setupGUI.book.equals("Yes") && (check.setupGUI.action.equals("BookSingle") || check.setupGUI.action.equals("BookAll") || check.setupGUI.enchant.equals("Book"))) {
+        if (EnchantControl.ACTION != null && EnchantControl.ENCHANT != null && EnchantControl.BOOK != null && EnchantControl.UNSAFE_ENCHANTS != null) {
+            if (EnchantControl.BOOK.equals("Yes") && (EnchantControl.ACTION.equals("BookSingle") || EnchantControl.ACTION.equals("BookAll") || EnchantControl.ENCHANT.equals("Book"))) {
                 check.sendPlayerMsg.sendPlayerMsg(p, "§3Invalid settings. Please check your settings");
                 return;
             }
-            check.enchantControl.setup = true;
-            check.enchantControl.writeToConfig("action", check.setupGUI.action);
-            check.enchantControl.writeToConfig("enchant", check.setupGUI.enchant);
+            EnchantControl.setup = true;
+            check.enchantControl.writeToConfig("action", EnchantControl.ACTION);
+            check.enchantControl.writeToConfig("enchant", EnchantControl.ENCHANT);
             check.enchantControl.writeToConfig("book", EnchantControl.BOOK);
             check.enchantControl.writeToConfig("unsafeEnchant", EnchantControl.UNSAFE_ENCHANTS);
             check.enchantControl.writeToConfig("setup", true);
@@ -295,7 +296,6 @@ public class ClickSetupGUI {
         } else {
             check.sendPlayerMsg.sendPlayerMsg(p, "§3You need define your settings first");
         }
-
     }
 
 }

@@ -25,15 +25,24 @@ import java.util.List;
 
 public class EnchantControl extends JavaPlugin {
 
+    // Settings
     public String GUIIdentifier = "§¾§¯§¿"; // Unique characters to identify an inventory from this plugin
-    public Boolean setup; // If the first time setup is done
-    public ItemStack fillerItem = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 7); // Filler item in inventories
+    public static Boolean AFFECT_BOOKS; // Determine if enchanted books should be affected
+    public static Boolean UNSAFE_ENCHANTS; // Check if unsafe enchants can be created in an anvil
+    public static String ACTION;
+    public static String ENCHANT;
+    public static String BOOK;
+
+    public static Boolean setup; // If the first time setup is done
+
     public String prefix; // Plugin prefix
     public String enchantCancel; // Message sent to players when enchanting is canceled
     public String removedEnchant; // Message sent to players when enchant is removed
+
+
+
+    public ItemStack fillerItem = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 7); // Filler item in inventories
     public List<String> msgAdd = new ArrayList<>(); // UUID's of players to change messages, with message they want to edit
-    public static Boolean BOOK; // Determine if enchanted books should be affected
-    public static Boolean UNSAFE_ENCHANTS; // Check if unsafe enchants can be created in an anvil
     public double version; // The server version
 
     public List<String> enchantConfigSectionID = new ArrayList<>(); // List over all enchant ID's - The same as Bukkit enchant ID, but my own method.
@@ -46,7 +55,7 @@ public class EnchantControl extends JavaPlugin {
     private MendingGUI mendingGUI = new MendingGUI(this);
     private SharedGUI sharedGUI = new SharedGUI(this, getEnchant, mendingGUI);
     private SendPlayerMsg sendPlayerMsg = new SendPlayerMsg(this, getEnchant);
-    private EnchantHandler enchantHandler = new EnchantHandler(this, mainGUI, setupGUI, sendPlayerMsg, getEnchant);
+    private EnchantHandler enchantHandler = new EnchantHandler(this, sendPlayerMsg, getEnchant);
     private MessageChanger messageChanger = new MessageChanger(this, setupGUI, sendPlayerMsg);
     private CreateConfig createConfig = new CreateConfig(this);
     private Anvil anvil = new Anvil(this, getEnchant, enchantHandler);

@@ -25,9 +25,6 @@ public class SetupGUI {
         this.registerEvents = registerEvents;
     }
 
-    public String action;
-    public String enchant;
-    public String book;
     private int[] fillerPlace = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 17, 18, 22, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35};
 
     public Inventory inventory = Bukkit.createInventory(null, 36, "§a§lEC §b§lSettings" + "§¾§¯§¿");
@@ -70,10 +67,10 @@ public class SetupGUI {
         lore.add(" §c§m----------------------------");
         if (enchantControl.configContains("Events.ItemSwap") && !enchantControl.getConfigBoolean("Events.Pickup")) {
             lore.add("     §a§lPickup Event: §b§lDisabled");
-            registerEvents.pickupItemEvent = false;
+            RegisterEvents.pickupItemEvent = false;
         } else {
             lore.add("     §a§lPickup Event: §b§lEnabled");
-            registerEvents.pickupItemEvent = true;
+            RegisterEvents.pickupItemEvent = true;
         }
         lore.add(" §c§m----------------------------");
         itemMeta.setLore(lore);
@@ -97,10 +94,10 @@ public class SetupGUI {
         lore.add(" §c§m----------------------------");
         if (enchantControl.configContains("Events.ItemSwap") && !enchantControl.getConfigBoolean("Events.Interact")) {
             lore.add("     §a§lInteract Event: §b§lDisabled");
-            registerEvents.interactEvent = false;
+            RegisterEvents.interactEvent = false;
         } else {
             lore.add("     §a§lInteract Event: §b§lEnabled");
-            registerEvents.interactEvent = true;
+            RegisterEvents.interactEvent = true;
         }
         lore.add(" §c§m----------------------------");
         itemMeta.setLore(lore);
@@ -124,10 +121,10 @@ public class SetupGUI {
         lore.add(" §c§m----------------------------");
         if (enchantControl.configContains("Events.ItemSwap") && !enchantControl.getConfigBoolean("Events.Held")) {
             lore.add("     §a§lHeld Event: §b§lDisabled");
-            registerEvents.itemHeldEvent = false;
+            RegisterEvents.itemHeldEvent = false;
         } else {
             lore.add("     §a§lHeld Event: §b§lEnabled");
-            registerEvents.itemHeldEvent = true;
+            RegisterEvents.itemHeldEvent = true;
         }
         lore.add(" §c§m----------------------------");
         itemMeta.setLore(lore);
@@ -151,10 +148,10 @@ public class SetupGUI {
         lore.add(" §c§m----------------------------");
         if (enchantControl.configContains("Events.ItemSwap") && !enchantControl.getConfigBoolean("Events.ItemSwap")) {
             lore.add("     §a§lSwap Event: §b§lDisabled");
-            registerEvents.itemSwapEvent = false;
+            RegisterEvents.itemSwapEvent = false;
         } else {
             lore.add("     §a§lSwap Event: §b§lEnabled");
-            registerEvents.itemSwapEvent = true;
+            RegisterEvents.itemSwapEvent = true;
         }
         lore.add(" §c§m----------------------------");
         itemMeta.setLore(lore);
@@ -178,10 +175,10 @@ public class SetupGUI {
         lore.add(" §c§m----------------------------");
         if (enchantControl.configContains("Events.ItemSwap") && !enchantControl.getConfigBoolean("Events.InventoryClick")) {
             lore.add("     §a§lInventory Click Event: §b§lDisabled");
-            registerEvents.clickItemEvent = false;
+            RegisterEvents.clickItemEvent = false;
         } else {
             lore.add("     §a§lInventory Click Event: §b§lEnabled");
-            registerEvents.clickItemEvent = true;
+            RegisterEvents.clickItemEvent = true;
         }
         lore.add(" §c§m----------------------------");
         itemMeta.setLore(lore);
@@ -205,10 +202,10 @@ public class SetupGUI {
         lore.add(" §c§m----------------------------");
         if (enchantControl.configContains("Events.ItemSwap") && !enchantControl.getConfigBoolean("Events.Enchant")) {
             lore.add("     §a§lEnchant Event: §b§lDisabled");
-            registerEvents.enchantEvent = false;
+            RegisterEvents.enchantEvent = false;
         } else {
             lore.add("     §a§lEnchant Event: §b§lEnabled");
-            registerEvents.enchantEvent = true;
+            RegisterEvents.enchantEvent = true;
         }
         lore.add(" §c§m----------------------------");
         itemMeta.setLore(lore);
@@ -274,16 +271,16 @@ public class SetupGUI {
     private String defineActionSetting() {
         if (enchantControl.configContains("action")) {
             if (enchantControl.getConfigString("action").equals("BookSingle")) {
-                action = "BookSingle";
+                EnchantControl.ACTION = "BookSingle";
                 return "     §a§lAction: §b§lBookSingle";
             } else if (enchantControl.getConfigString("action").equals("BookAll")) {
-                action = "BookAll";
+                EnchantControl.ACTION = "BookAll";
                 return "     §a§lAction: §b§lBookAll";
             } else if (enchantControl.getConfigString("action").equals("RemoveSingle")) {
-                action = "RemoveSingle";
+                EnchantControl.ACTION = "RemoveSingle";
                 return "     §a§lAction: §b§lRemoveSingle";
             } else if (enchantControl.getConfigString("action").equals("RemoveAll")) {
-                action = "RemoveAll";
+                EnchantControl.ACTION = "RemoveAll";
                 return "     §a§lAction: §b§lRemoveAll";
             }
         }
@@ -320,13 +317,13 @@ public class SetupGUI {
     private String defineEnchantSetting() {
         if (enchantControl.configContains("enchant")) {
             if (enchantControl.getConfigString("enchant").equals("Remove")) {
-                enchant = "Remove";
+                EnchantControl.ENCHANT = "Remove";
                 return "     §a§lEnchant: §b§lRemove";
             } else if (enchantControl.getConfigString("enchant").equals("Book")) {
-                enchant = "Book";
+                EnchantControl.ENCHANT = "Book";
                 return "     §a§lEnchant: §b§lBook";
             } else if (enchantControl.getConfigString("enchant").equals("Cancel")) {
-                enchant = "Cancel";
+                EnchantControl.ENCHANT = "Cancel";
                 return "     §a§lEnchant: §b§lCancel";
             }
         }
@@ -363,16 +360,16 @@ public class SetupGUI {
     private String defineBookSetting() {
         if (enchantControl.configContains("book")) {
             if (enchantControl.getConfigBoolean("book")) {
-                book = "Yes";
-                EnchantControl.BOOK = true;
+                EnchantControl.BOOK = "Yes";
+                EnchantControl.AFFECT_BOOKS = true;
                 return "     §a§lBook: §b§lYes";
             } else if (!enchantControl.getConfigBoolean("book")) {
-                book = "No";
-                EnchantControl.BOOK = false;
+                EnchantControl.BOOK = "No";
+                EnchantControl.AFFECT_BOOKS = false;
                 return "     §a§lBook: §b§lNo";
             }
         } else {
-            EnchantControl.BOOK = false;
+            EnchantControl.AFFECT_BOOKS = false;
         }
         return "     §a§lBook: §b§lNot set";
     }
@@ -413,7 +410,9 @@ public class SetupGUI {
                 return "     §a§lUnsafe: §b§lTrue";
             }
         }
+        EnchantControl.UNSAFE_ENCHANTS = false;
         return "     §a§lUnsafe: §b§lFalse";
+
     }
 
 

@@ -5,9 +5,7 @@ import com.gmail.arkobat.EnchantControl.GUIHandler.MainGUI;
 import com.gmail.arkobat.EnchantControl.GUIHandler.SetupGUI;
 import com.gmail.arkobat.EnchantControl.Utilities.GetEnchant;
 import com.gmail.arkobat.EnchantControl.Utilities.SendPlayerMsg;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.SkullType;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -19,20 +17,15 @@ import org.bukkit.inventory.meta.SkullMeta;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class EnchantHandler {
 
     private final EnchantControl enchantControl;
-    private final MainGUI mainGUI;
-    private final SetupGUI setupGUI;
     private final SendPlayerMsg sendPlayerMsg;
     private final GetEnchant getEnchant;
 
-    public EnchantHandler(EnchantControl enchantControl, MainGUI mainGUI, SetupGUI setupGUI, SendPlayerMsg sendPlayerMsg, GetEnchant getEnchant) {
+    public EnchantHandler(EnchantControl enchantControl, SendPlayerMsg sendPlayerMsg, GetEnchant getEnchant) {
         this.enchantControl = enchantControl;
-        this.mainGUI = mainGUI;
-        this.setupGUI = setupGUI;
         this.sendPlayerMsg = sendPlayerMsg;
         this.getEnchant = getEnchant;
 
@@ -89,14 +82,14 @@ public class EnchantHandler {
     }
 
     private boolean checkDisabled(ItemStack itemStack, Player p) {
-        if (setupGUI.action == null) {
+        if (EnchantControl.ACTION == null) {
             return false;
         }
         List<Enchantment> toRemove = new ArrayList<>();
         for (Enchantment enchantment : itemStack.getEnchantments().keySet()) {
             if (enchantControl.enchantConfigSection.containsKey(getEnchant.getIDSting(enchantment) + ".disabled")) {
                 if (Boolean.valueOf(enchantControl.enchantConfigSection.get(getEnchant.getIDSting(enchantment) + ".disabled"))) {
-                    if (setupGUI.action.equals("RemoveAll")) {
+                    if (EnchantControl.ACTION.equals("RemoveAll")) {
                         toRemove.addAll(itemStack.getEnchantments().keySet());
                         break;
                     } else {
@@ -149,7 +142,7 @@ public class EnchantHandler {
     }
 
     private boolean checkBookMaxLvl(ItemStack book, Player p) {
-        if (EnchantControl.BOOK) {
+        if (EnchantControl.AFFECT_BOOKS) {
             if (book.hasItemMeta()) {
                 EnchantmentStorageMeta meta = (EnchantmentStorageMeta) book.getItemMeta();
                 HashMap<Enchantment, Integer> toSet = new HashMap<>();
@@ -181,7 +174,7 @@ public class EnchantHandler {
     }
 
     private boolean checkBook(ItemStack book, Player p) {
-        if (EnchantControl.BOOK) {
+        if (EnchantControl.AFFECT_BOOKS) {
             if (book.hasItemMeta()) {
                 EnchantmentStorageMeta meta = (EnchantmentStorageMeta) book.getItemMeta();
                 List<Enchantment> toRemove = new ArrayList<>();

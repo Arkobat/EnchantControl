@@ -72,12 +72,9 @@ public class Shared extends RegisterEvents implements Listener{
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
-        Bukkit.getServer().getConsoleSender().sendMessage("Debug: InvClick 1");
         if (!clickItemEvent) {
-            Bukkit.getServer().getConsoleSender().sendMessage("Debug: InvClick 2");
             return;
         }
-        Bukkit.getServer().getConsoleSender().sendMessage("Debug: InvClick 3");
         Player p = e.getWhoClicked() instanceof Player ? (Player) e.getWhoClicked() : null;
         Inventory inventory = e.getInventory(); // The inventory that was clicked in
         ItemStack clicked = e.getCurrentItem(); // The item that was clicked
@@ -111,7 +108,7 @@ public class Shared extends RegisterEvents implements Listener{
         List<Enchantment> enchantList = new ArrayList<>();
         for (Enchantment enchantment : e.getEnchantsToAdd().keySet()) {
             if (enchantControl.enchantConfigSection.containsKey(getEnchant.getIDSting(enchantment) + ".disabled") && Boolean.valueOf(enchantControl.enchantConfigSection.get(getEnchant.getIDSting(enchantment) + ".disabled"))) {
-                if (setupGUI.enchant.equals("Cancel")) {
+                if (EnchantControl.ENCHANT.equals("Cancel")) {
                     sendPlayerMsg.sendPlayerMsg(p, "enchantCancel", e.getItem());
                     e.setCancelled(true);
                     return;
@@ -123,7 +120,7 @@ public class Shared extends RegisterEvents implements Listener{
             e.getEnchantsToAdd().remove(enchantment);
         }
         if (e.getEnchantsToAdd().isEmpty()) {
-            if (setupGUI.enchant.equals("RemoveReturn")) {
+            if (EnchantControl.ENCHANT.equals("RemoveReturn")) {
                 sendPlayerMsg.sendPlayerMsg(p, "enchantCancel", e.getItem());
             }
         }

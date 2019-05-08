@@ -192,6 +192,23 @@ public class CreateConfig {
         addToConfigSection("71.bukkitName", "VANISHING_CURSE");
         addToConfigSection("71.ver", "1.11");
         addToConfigSection("71.maxEnchantLevel", "1");
+
+        // 1.14 Enchants - Theese have no Minecraft ID's
+
+        addToConfigSection("101.name", "Multishot");
+        addToConfigSection("101.bukkitName", "MULTISHOT");
+        addToConfigSection("101.ver", "1.14");
+        addToConfigSection("101.maxEnchantLevel", "1");
+
+        addToConfigSection("102.name", "Piercing");
+        addToConfigSection("102.bukkitName", "PIERCING");
+        addToConfigSection("102.ver", "1.14");
+        addToConfigSection("103.maxEnchantLevel", "4");
+
+        addToConfigSection("103.name", "Quick Charge");
+        addToConfigSection("103.bukkitName", "QUICK_CHARGE");
+        addToConfigSection("103.ver", "1.14");
+        addToConfigSection("103.maxEnchantLevel", "3");
     }
 
     private void addToConfigSection(String path, String value) {

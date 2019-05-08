@@ -3,9 +3,14 @@ package com.gmail.arkobat.EnchantControl;
 import com.gmail.arkobat.EnchantControl.Utilities.GetEnchant;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.Repairable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +27,7 @@ public class Anvil {
     }
 
     public ItemStack getResultItem(ItemStack item1, ItemStack item2, ItemStack result) {
-        if (!EnchantControl.UNSAFE_ENCHANTS) {
+        if (!EnchantControl.setup || !EnchantControl.UNSAFE_ENCHANTS) {
             return result;
         }
         if (item1 == null) {
@@ -39,8 +44,19 @@ public class Anvil {
         }
 
         result = addEnchants(result, getResultEnchants(item1, item2));
-
         enchantHandler.checkItem(result, null);
+
+
+        Repairable repairable = (Repairable) result.getItemMeta();
+        if (repairable == null) {
+            return result;
+        }
+        int repairPrice = repairable.getRepairCost();
+        if (repairPrice > 15) {
+            repairable.setRepairCost(15);
+        }
+        result.setItemMeta((ItemMeta) repairable);
+
         return result;
     }
 
@@ -96,9 +112,13 @@ public class Anvil {
         if (type == Material.ENCHANTED_BOOK) {
             return true;
         }
-        ItemStack is = new ItemStack(type);
-        is.addEnchantment(enchant, 1);
-        return is.getEnchantments().containsKey(enchant);
+        try {
+            ItemStack is = new ItemStack(type);
+            is.addEnchantment(enchant, 1);
+            return is.getEnchantments().containsKey(enchant);
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
     }
 
     private int getMaxValue(Enchantment enchant) {
@@ -121,10 +141,10 @@ public class Anvil {
             }
             return item;
         }
-
         for (Enchantment enchant : enchants.keySet()) {
             item.addUnsafeEnchantment(enchant, enchants.get(enchant));
         }
         return item;
     }
+
 }
