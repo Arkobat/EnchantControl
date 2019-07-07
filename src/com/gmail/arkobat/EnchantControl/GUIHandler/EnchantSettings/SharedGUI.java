@@ -2,6 +2,7 @@ package com.gmail.arkobat.EnchantControl.GUIHandler.EnchantSettings;
 
 import com.gmail.arkobat.EnchantControl.EnchantControl;
 import com.gmail.arkobat.EnchantControl.Utilities.GetEnchant;
+import com.gmail.arkobat.EnchantControl.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
@@ -50,7 +51,7 @@ public class SharedGUI {
     }
 
     private ItemStack defineBackItem() {
-        ItemStack backItem = new ItemStack(Material.ARROW);
+        ItemStack backItem = new ItemStack(XMaterial.ARROW.parseItem());
         ItemMeta backItemMeta = backItem.getItemMeta();
         backItemMeta.setDisplayName("§c§lBack");
         backItem.setItemMeta(backItemMeta);
@@ -58,7 +59,7 @@ public class SharedGUI {
     }
 
     private ItemStack defineComingSoonItem() {
-        ItemStack comingSoon = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 8);
+        ItemStack comingSoon = new ItemStack(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem());
         ItemMeta comingSoonMeta = comingSoon.getItemMeta();
         comingSoonMeta.setDisplayName("§r");
         List<String> comingSoonLore = new ArrayList<>();
@@ -71,7 +72,7 @@ public class SharedGUI {
     }
 
     private ItemStack defineMaxLevelItem(String id) {
-        ItemStack itemStack = new ItemStack(Material.BOOK, 1);
+        ItemStack itemStack = new ItemStack(XMaterial.BOOK.parseMaterial(), 1);
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName("§6§lMax level");
 

@@ -54,6 +54,8 @@ public class RegisterEvents implements Listener {
             Bukkit.getPluginManager().registerEvents(new Version1_12(enchantControl, enchantHandler, setupGUI, anvil), enchantControl);
         } else if (version == 1.13) {
             Bukkit.getPluginManager().registerEvents(new Version1_13(enchantControl, enchantHandler, setupGUI, anvil), enchantControl);
+        } else if (version == 1.14) {
+            Bukkit.getPluginManager().registerEvents(new Version1_14(enchantControl, enchantHandler, setupGUI, anvil), enchantControl);
         }
     }
 

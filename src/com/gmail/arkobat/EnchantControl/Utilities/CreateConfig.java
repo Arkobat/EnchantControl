@@ -196,7 +196,7 @@ public class CreateConfig {
         // 1.14 Enchants - Theese have no Minecraft ID's
 
         addToConfigSection("101.name", "Multishot");
-        addToConfigSection("101.bukkitName", "MULTISHOT");
+        addToConfigSection("101.bukkitName", "MULTSHOT");
         addToConfigSection("101.ver", "1.14");
         addToConfigSection("101.maxEnchantLevel", "1");
 

@@ -20,12 +20,18 @@ public class GUISelector {
     }
 
     public void onClick(Inventory inventory, ItemStack clicked, ClickType type, Player player, int slot) {
+        String invName;
+        if (EnchantControl.VERSION >= 1.14) {
+            invName = player.getOpenInventory().getTitle();
+        } else {
+            invName = inventory.getName();
+        }
         if (inventory.getSize() >= slot && inventory.getItem(slot) != null && inventory.getItem(slot).equals(clicked)) {
-            if (inventory.getName().equals("§a§lEC §b§lSettings" + enchantControl.GUIIdentifier)) {
+            if (invName.equals("§a§lEC §b§lSettings" + enchantControl.GUIIdentifier)) {
                 clickSetupGUI.onClickSettings(clicked, type, player);
-            } else if (inventory.getName().equals("§a§lEnchantControl" + enchantControl.GUIIdentifier)) {
+            } else if (invName.equals("§a§lEnchantControl" + enchantControl.GUIIdentifier)) {
                 clickMainGUI.onClickMain(clicked, player, slot, type);
-            } else if (inventory.getName().contains(enchantControl.GUIIdentifier + "§_")) {
+            } else if (invName.contains(enchantControl.GUIIdentifier + "§_")) {
                 clickEnchantGUIs.onClickGUIs(clicked, slot, type, player);
             }
         }

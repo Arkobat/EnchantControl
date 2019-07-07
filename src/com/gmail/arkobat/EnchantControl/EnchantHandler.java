@@ -34,7 +34,7 @@ public class EnchantHandler {
     public boolean checkItem(ItemStack itemStack, Player p) {
         if (itemStack != null && itemStack.getType() != Material.AIR) {
             if (!check64(itemStack)) {
-                if (itemStack.getType() == Material.ENCHANTED_BOOK) {
+                if (itemStack.getType() == XMaterial.ENCHANTED_BOOK.parseMaterial()) {
                     return checkBook(itemStack, p) || checkBookMaxLvl(itemStack, p);
                 }
                 if (itemStack.hasItemMeta() && itemStack.getItemMeta().hasEnchants()) {
@@ -54,10 +54,10 @@ public class EnchantHandler {
         newItemStack.setDurability((short) 0);
 
 
-        if (newItemStack.getType() == Material.SKULL_ITEM) {
+        if (newItemStack.getType() == XMaterial.PLAYER_HEAD.parseMaterial()) {
             SkullMeta skullMeta = (SkullMeta) newItemStack.getItemMeta();
             if (!skullMeta.hasOwner() || (skullMeta.hasOwner() && skullMeta.getOwner() == null)) {
-                ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short) SkullType.PLAYER.ordinal());
+                ItemStack skull = new ItemStack(XMaterial.PLAYER_HEAD.parseMaterial(), 1);
                 ItemMeta itemMeta = skull.getItemMeta();
 
                 if (newItemStack.hasItemMeta()) {
@@ -194,7 +194,7 @@ public class EnchantHandler {
                         }
                     }
                     if (meta.getStoredEnchants().isEmpty()) {
-                        book.setType(Material.BOOK);
+                        book.setType(XMaterial.BOOK.parseMaterial());
                     }
                     return true;
                 }
@@ -218,7 +218,7 @@ public class EnchantHandler {
     public ItemStack checkMendingInfinity(ItemStack item1, ItemStack item2, ItemStack result) {
      /*
         Bukkit.getServer().getConsoleSender().sendMessage("Debug: 1");
-        if (enchantControl.version < 1.11) {
+        if (enchantControl.VERSION < 1.11) {
             return result;
         }
 

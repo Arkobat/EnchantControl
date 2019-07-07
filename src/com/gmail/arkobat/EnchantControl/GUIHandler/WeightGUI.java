@@ -1,6 +1,7 @@
 package com.gmail.arkobat.EnchantControl.GUIHandler;
 
 import com.gmail.arkobat.EnchantControl.EnchantControl;
+import com.gmail.arkobat.EnchantControl.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
@@ -20,7 +21,7 @@ public class WeightGUI {
         Inventory inv = Bukkit.createInventory(null, 18, "§b§lEC §a§lWeight" + enchantControl.GUIIdentifier);
         int loc = 0;
         for (String key : enchantControl.enchantConfigSectionID) {
-            if (enchantControl.version >= Double.parseDouble(enchantControl.enchantConfigSection.get(key + ".ver"))) {
+            if (enchantControl.VERSION >= Double.parseDouble(enchantControl.enchantConfigSection.get(key + ".ver"))) {
                 ItemStack itemStack = new ItemStack(Material.valueOf(defineItem(key)));
                 ItemMeta itemMeta = itemStack.getItemMeta();
                 itemMeta.setDisplayName("§6§l" + enchantControl.enchantConfigSection.get(key + ".name"));
@@ -63,7 +64,7 @@ public class WeightGUI {
     }
 
     private ItemStack defineBackItem() {
-        ItemStack settingItem = new ItemStack(Material.BOOK_AND_QUILL);
+        ItemStack settingItem = new ItemStack(XMaterial.WRITABLE_BOOK.parseMaterial());
         ItemMeta settingItemMeta = settingItem.getItemMeta();
         settingItemMeta.setDisplayName("§6§lSettings");
         List<String> lore = new ArrayList<>();

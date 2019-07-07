@@ -11,7 +11,6 @@ import com.gmail.arkobat.EnchantControl.Utilities.CreateConfig;
 import com.gmail.arkobat.EnchantControl.Utilities.GetEnchant;
 import com.gmail.arkobat.EnchantControl.Utilities.SendPlayerMsg;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.Inventory;
@@ -40,10 +39,9 @@ public class EnchantControl extends JavaPlugin {
     public String removedEnchant; // Message sent to players when enchant is removed
 
 
-
-    public ItemStack fillerItem = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 7); // Filler item in inventories
+    public ItemStack fillerItem = new ItemStack(XMaterial.BLUE_STAINED_GLASS_PANE.parseItem()); // Filler item in inventories
     public List<String> msgAdd = new ArrayList<>(); // UUID's of players to change messages, with message they want to edit
-    public double version; // The server version
+    public static double VERSION; // The server VERSION
 
     public List<String> enchantConfigSectionID = new ArrayList<>(); // List over all enchant ID's - The same as Bukkit enchant ID, but my own method.
     public HashMap<String, String> enchantConfigSection = new HashMap<>(); // A map of all settings.
@@ -70,7 +68,7 @@ public class EnchantControl extends JavaPlugin {
     @Override
     public void onEnable() {
         getVersion();
-        evt.reqisterEvents(version);
+        evt.reqisterEvents(VERSION);
         getCommand("EnchantControl").setExecutor(new CommandHandler(this, mainGUI, setupGUI));
         Bukkit.getPluginManager().registerEvents(new RegisterEvents(this, enchantHandler, setupGUI, messageChanger, sendPlayerMsg, getEnchant, anvil), this);
 
@@ -82,9 +80,16 @@ public class EnchantControl extends JavaPlugin {
     @Override
     public void onDisable() {
         for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-            if (p.getOpenInventory().getTopInventory().getTitle().contains("§¾§¯§¿")) {
-                p.closeInventory();
+            if (VERSION >= 1.14) {
+                if (p.getOpenInventory().getTitle().contains("§¾§¯§¿")) {
+                    p.closeInventory();
+                }
+            } else {
+                if (p.getOpenInventory().getTopInventory().getTitle().contains("§¾§¯§¿")) {
+                    p.closeInventory();
+                }
             }
+
         }
 
         //Bukkit.getServer().getOnlinePlayers().stream().filter(player -> player.getOpenInventory().getTopInventory().getTitle().contains("§¾§¯§¿")).forEach(Player::closeInventory);
@@ -176,30 +181,32 @@ public class EnchantControl extends JavaPlugin {
             Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c");
             Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c          WARNING");
             Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c§m----------------------------");
-            version = 1.07;
+            VERSION = 1.07;
         } else if (ver.contains("1.8")) {
-            version = 1.08;
+            VERSION = 1.08;
         } else if (ver.contains("1.9")) {
-            version = 1.09;
+            VERSION = 1.09;
         } else if (ver.contains("1.10")) {
-            version = 1.10;
+            VERSION = 1.10;
         } else if (ver.contains("1.11")) {
-            version = 1.11;
+            VERSION = 1.11;
         } else if (ver.contains("1.12")) {
-            version = 1.12;
+            VERSION = 1.12;
         } else if (ver.contains("1.13")) {
-            version = 1.13;
+            VERSION = 1.13;
+        } else if (ver.contains("1.14")) {
+            VERSION = 1.14;
         } else {
             Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c§m---------------------------------------------");
             Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c                     WARNING                   ");
             Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c");
             Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c            §3[§cEnchantControl§3]             ");
-            Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c          Could not determine version.         ");
-            Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c  Assuming you are running higher than §b1.13  ");
+            Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c          Could not determine VERSION.         ");
+            Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c  Assuming you are running higher than §b1.14  ");
             Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c");
             Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c                     WARNING                   ");
             Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c§m---------------------------------------------");
-            version = 1.13;
+            VERSION = 1.14;
         }
     }
 

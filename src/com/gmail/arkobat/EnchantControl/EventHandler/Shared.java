@@ -6,7 +6,6 @@ import com.gmail.arkobat.EnchantControl.GUIHandler.SetupGUI;
 import com.gmail.arkobat.EnchantControl.MessageChanger;
 import com.gmail.arkobat.EnchantControl.Utilities.GetEnchant;
 import com.gmail.arkobat.EnchantControl.Utilities.SendPlayerMsg;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -48,7 +47,7 @@ public class Shared extends RegisterEvents implements Listener{
             return;
         }
         Player p = e.getPlayer() instanceof Player ? e.getPlayer() : null;
-        if (enchantControl.version == 1.08) {
+        if (enchantControl.VERSION == 1.08) {
             enchantHandler.checkItem(e.getPlayer().getItemInHand(), p);
         } else {
             enchantHandler.checkItem(e.getPlayer().getInventory().getItemInMainHand(), p);
@@ -62,7 +61,7 @@ public class Shared extends RegisterEvents implements Listener{
             return;
         }
         Player p = e.getPlayer() instanceof Player ? e.getPlayer() : null;
-        if (enchantControl.version == 1.08) {
+        if (enchantControl.VERSION == 1.08) {
             enchantHandler.checkItem(e.getPlayer().getItemInHand(), p);
         } else {
             enchantHandler.checkItem(e.getPlayer().getInventory().getItemInMainHand(), p);
@@ -72,20 +71,26 @@ public class Shared extends RegisterEvents implements Listener{
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
-        if (!clickItemEvent) {
-            return;
-        }
         Player p = e.getWhoClicked() instanceof Player ? (Player) e.getWhoClicked() : null;
         Inventory inventory = e.getInventory(); // The inventory that was clicked in
         ItemStack clicked = e.getCurrentItem(); // The item that was clicked
         ClickType type = e.getClick(); // The button that was clicked
-        if (inventory.getName().contains(enchantControl.GUIIdentifier)) {
+        String inventoryName;
+        if (EnchantControl.VERSION >= 1.14) {
+            inventoryName = e.getView().getTitle();
+        } else {
+            inventoryName = inventory.getName();
+        }
+        if (inventoryName.contains(enchantControl.GUIIdentifier)) {
             e.setCancelled(true);
             int slot = e.getSlot();
             if (clicked != null && clicked.getType() != Material.AIR) {
                 enchantControl.onClick(inventory, clicked, type, p, slot);
                 if (p != null) {p.updateInventory();}
             }
+            return;
+        }
+        if (!clickItemEvent) {
             return;
         }
         if (!e.isCancelled()) {

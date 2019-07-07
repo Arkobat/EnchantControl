@@ -7,7 +7,6 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -48,13 +47,15 @@ public class CommandHandler implements CommandExecutor {
 
     private boolean withArgs(String[] args, Player p) {
         if (args[0].equalsIgnoreCase("debug")) {
-            p.sendMessage("Server version " + enchantControl.version);
+            p.sendMessage("Server VERSION " + enchantControl.VERSION);
             return true;
         }
         if (args[0].equalsIgnoreCase("writeFullConfig")) {
             return writeFullConfig();
         } else if (args[0].equalsIgnoreCase("exclude")) {
             return exclude(p);
+        } else if (args[0].equalsIgnoreCase("max") || args[0].equalsIgnoreCase("maxLevel")) {
+            return (maxLevel(p, args));
         }
         return false;
     }
@@ -68,7 +69,7 @@ public class CommandHandler implements CommandExecutor {
 
     private boolean exclude(Player p) {
         ItemStack itemStack;
-        if (enchantControl.version == 1.08) {
+        if (enchantControl.VERSION == 1.08) {
             itemStack = p.getItemInHand();
         } else {
             itemStack = p.getInventory().getItemInMainHand();
@@ -84,6 +85,16 @@ public class CommandHandler implements CommandExecutor {
                 p.sendMessage(enchantControl.prefix + " §aItem added to excluded list");
             } else {
                 p.sendMessage(enchantControl.prefix + " §cItem already excluded");
+            }
+        }
+        return true;
+    }
+
+    private boolean maxLevel(Player p, String[] args) {
+        // /enchantControl maxLevel <enchant>
+        if (args.length == 2) {
+            if (!p.hasPermission("enchantControl.max.gui")) {
+                return true;
             }
         }
         return true;

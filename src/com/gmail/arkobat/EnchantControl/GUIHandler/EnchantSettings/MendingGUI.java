@@ -1,7 +1,7 @@
 package com.gmail.arkobat.EnchantControl.GUIHandler.EnchantSettings;
 
 import com.gmail.arkobat.EnchantControl.EnchantControl;
-import org.bukkit.Material;
+import com.gmail.arkobat.EnchantControl.XMaterial;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -17,7 +17,7 @@ public class MendingGUI {
     }
 
     public Inventory applyMendingSettings(Inventory inv) {
-        if (enchantControl.version >= 1.11) {
+        if (enchantControl.VERSION >= 1.11) {
             inv.setItem(1, defineInfinityCapability());
         }
         return inv;
@@ -25,7 +25,7 @@ public class MendingGUI {
 
 
     private ItemStack defineInfinityCapability() {
-        ItemStack itemStack = new ItemStack(Material.ARROW);
+        ItemStack itemStack = new ItemStack(XMaterial.ARROW.parseItem());
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName("§6§lInfinity");
 

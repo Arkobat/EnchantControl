@@ -2,9 +2,9 @@ package com.gmail.arkobat.EnchantControl.GUIHandler;
 
 import com.gmail.arkobat.EnchantControl.EnchantControl;
 import com.gmail.arkobat.EnchantControl.EventHandler.RegisterEvents;
+import com.gmail.arkobat.EnchantControl.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -43,7 +43,7 @@ public class SetupGUI {
         definePickupItemEvent();
         defineInteractEvent();
         defineItemHeldEvent();
-        if (enchantControl.version >= 1.09) {
+        if (enchantControl.VERSION >= 1.09) {
             defineItemSwapEvent();
         }
         defineClickItemEvent();
@@ -52,7 +52,7 @@ public class SetupGUI {
     }
 
     private void definePickupItemEvent() {
-        ItemStack itemStack = new ItemStack(Material.REDSTONE_COMPARATOR);
+        ItemStack itemStack = new ItemStack(XMaterial.COMPARATOR.parseItem());
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName("§6§lPickup Event");
 
@@ -79,7 +79,7 @@ public class SetupGUI {
     }
 
     private void defineInteractEvent() {
-        ItemStack itemStack = new ItemStack(Material.REDSTONE_COMPARATOR);
+        ItemStack itemStack = new ItemStack(XMaterial.COMPARATOR.parseItem());
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName("§6§lInteract Event");
 
@@ -106,7 +106,7 @@ public class SetupGUI {
     }
 
     private void defineItemHeldEvent() {
-        ItemStack itemStack = new ItemStack(Material.REDSTONE_COMPARATOR);
+        ItemStack itemStack = new ItemStack(XMaterial.COMPARATOR.parseItem());
         ItemMeta itemMeta = itemStack.getItemMeta();
        itemMeta.setDisplayName("§6§lItem Held Event");
 
@@ -133,7 +133,7 @@ public class SetupGUI {
     }
 
     private void defineItemSwapEvent() {
-        ItemStack itemStack = new ItemStack(Material.REDSTONE_COMPARATOR);
+        ItemStack itemStack = new ItemStack(XMaterial.COMPARATOR.parseItem());
         ItemMeta itemMeta = itemStack.getItemMeta();
        itemMeta.setDisplayName("§6§lSwap Event");
 
@@ -160,7 +160,7 @@ public class SetupGUI {
     }
 
     private void defineClickItemEvent() {
-        ItemStack itemStack = new ItemStack(Material.REDSTONE_COMPARATOR);
+        ItemStack itemStack = new ItemStack(XMaterial.COMPARATOR.parseItem());
         ItemMeta itemMeta = itemStack.getItemMeta();
        itemMeta.setDisplayName("§6§lInventory Click Event");
 
@@ -187,7 +187,7 @@ public class SetupGUI {
     }
 
     private void defineEnchantEvent() {
-        ItemStack itemStack = new ItemStack(Material.REDSTONE_COMPARATOR);
+        ItemStack itemStack = new ItemStack(XMaterial.COMPARATOR.parseItem());
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName("§6§lEnchant Event");
 
@@ -214,7 +214,7 @@ public class SetupGUI {
     }
 
     private void defineAnvilEvent() {
-        ItemStack itemStack = new ItemStack(Material.REDSTONE_COMPARATOR);
+        ItemStack itemStack = new ItemStack(XMaterial.COMPARATOR.parseItem());
         ItemMeta itemMeta = itemStack.getItemMeta();
        itemMeta.setDisplayName("§6§lAnvil Event");
 
@@ -242,7 +242,7 @@ public class SetupGUI {
 
 
     private void defineActionItem() {
-        ItemStack itemStack = new ItemStack(Material.BOOK_AND_QUILL);
+        ItemStack itemStack = new ItemStack(XMaterial.WRITABLE_BOOK.parseItem());
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName("§6§lAction");
         itemMeta.setLore(defineActionLore());
@@ -288,7 +288,7 @@ public class SetupGUI {
     }
 
     private void defineEnchantItem() {
-        ItemStack itemStack = new ItemStack(Material.ENCHANTMENT_TABLE);
+        ItemStack itemStack = new ItemStack(XMaterial.ENCHANTING_TABLE.parseItem());
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName("§6§lEnchant");
         itemMeta.setLore(defineEnchantLore());
@@ -331,7 +331,7 @@ public class SetupGUI {
     }
 
     private void defineBookItem() {
-        ItemStack itemStack = new ItemStack(Material.BOOK);
+        ItemStack itemStack = new ItemStack(XMaterial.BOOK.parseItem());
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName("§6§lBook");
         itemMeta.setLore(defineBookLore());
@@ -378,7 +378,7 @@ public class SetupGUI {
 
 
     private void defineUnsafeEnchantItem() {
-        ItemStack itemStack = new ItemStack(Material.ANVIL);
+        ItemStack itemStack = new ItemStack(XMaterial.ANVIL.parseItem());
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName("§6§lUnsafe Enchants");
         itemMeta.setLore(defineUnsafeEnchantLore());
@@ -417,9 +417,9 @@ public class SetupGUI {
 
 
     public void defineMessageItems() {
-        ItemStack prefix = new ItemStack(Material.PAPER);
-        ItemStack enchantCancel = new ItemStack(Material.PAPER);
-        ItemStack removedEnchant = new ItemStack(Material.PAPER);
+        ItemStack prefix = new ItemStack(XMaterial.PAPER.parseItem());
+        ItemStack enchantCancel = new ItemStack(XMaterial.PAPER.parseItem());
+        ItemStack removedEnchant = new ItemStack(XMaterial.PAPER.parseItem());
 
         ItemMeta prefixMeta = prefix.getItemMeta();
         ItemMeta enchantCancelMeta = enchantCancel.getItemMeta();
@@ -516,7 +516,7 @@ public class SetupGUI {
     }
 
     private void defineSaveItem() {
-        ItemStack itemStack = new ItemStack(Material.EMERALD_BLOCK);
+        ItemStack itemStack = new ItemStack(XMaterial.EMERALD_BLOCK.parseItem());
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName("§6§lSave");
         itemMeta.setLore(defineSaveLore());

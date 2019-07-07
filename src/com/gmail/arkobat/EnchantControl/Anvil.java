@@ -64,7 +64,7 @@ public class Anvil {
         Map<Enchantment, Integer> enchants = new HashMap<>();
 
         Map<Enchantment, Integer> item1Enchants;
-        if (item1.getType() == Material.ENCHANTED_BOOK) {
+        if (item1.getType() == XMaterial.ENCHANTED_BOOK.parseMaterial()) {
             EnchantmentStorageMeta meta = (EnchantmentStorageMeta) item1.getItemMeta();
             item1Enchants = meta.getStoredEnchants();
         } else {
@@ -73,7 +73,7 @@ public class Anvil {
 
         Map<Enchantment, Integer> item2Enchants = new HashMap<>();
         if (item2 != null) {
-            if (item2.getType() == Material.ENCHANTED_BOOK) {
+            if (item2.getType() == XMaterial.ENCHANTED_BOOK.parseMaterial()) {
                 EnchantmentStorageMeta meta = (EnchantmentStorageMeta) item2.getItemMeta();
                 item2Enchants = meta.getStoredEnchants();
             } else {
@@ -109,7 +109,7 @@ public class Anvil {
     }
 
     private boolean canHaveEnchantment(Material type, Enchantment enchant) {
-        if (type == Material.ENCHANTED_BOOK) {
+        if (type == XMaterial.ENCHANTED_BOOK.parseMaterial()) {
             return true;
         }
         try {
@@ -133,7 +133,7 @@ public class Anvil {
     }
 
     private ItemStack addEnchants(ItemStack item, Map<Enchantment, Integer> enchants) {
-        if (item.getType() == Material.ENCHANTED_BOOK) {
+        if (item.getType() == XMaterial.ENCHANTED_BOOK.parseMaterial()) {
             EnchantmentStorageMeta meta = (EnchantmentStorageMeta) item.getItemMeta();
             for (Enchantment enchant : enchants.keySet()) {
                 meta.addStoredEnchant(enchant, enchants.get(enchant), true);

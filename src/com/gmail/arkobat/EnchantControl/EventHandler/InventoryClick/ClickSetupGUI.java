@@ -2,6 +2,7 @@ package com.gmail.arkobat.EnchantControl.EventHandler.InventoryClick;
 
 import com.gmail.arkobat.EnchantControl.EnchantControl;
 import com.gmail.arkobat.EnchantControl.EventHandler.RegisterEvents;
+import com.gmail.arkobat.EnchantControl.XMaterial;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.Main;
 import org.bukkit.entity.Player;
@@ -41,11 +42,11 @@ public class ClickSetupGUI {
                     if (type == ClickType.LEFT) {
                         onClickSettingsSave(player);
                     }
-                } else if (clicked.getType() == Material.PAPER) {
+                } else if (clicked.getType() == XMaterial.PAPER.parseMaterial()) {
                     if (type == ClickType.LEFT) {
                         onClickSettingsMessage(clicked, player);
                     }
-                } else if (clicked.getType() == Material.REDSTONE_COMPARATOR || clicked.getType() == Material.REDSTONE_COMPARATOR_OFF) {
+                } else if (clicked.getType() == XMaterial.COMPARATOR.parseMaterial()) {
                     if (type == ClickType.LEFT) {
                         onClickSettingdEvents(clicked);
                     }

@@ -1,12 +1,17 @@
 name: EnchantControl
-version: 1.3.3
+version: 1.4.0
 author: Arkobat
 main: com.gmail.arkobat.EnchantControl.EnchantControl
 description: Take back control of all enchantments
+api-version: 1.14
 commands:
   EnchantControl:
     description: Opens a GUI to toggle enchants
 
 permissions:
    EnchantControl.admin:
+     description: Permission to use the plugin
+   EnchantControl.max.gui:
+     description: Permission to use the plugin
+   EnchantControl.max.enchant:
      description: Permission to use the plugin

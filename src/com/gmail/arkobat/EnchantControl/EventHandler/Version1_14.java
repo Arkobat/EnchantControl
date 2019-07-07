@@ -10,13 +10,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 
-public class Version1_12 extends RegisterEvents implements Listener {
+public class Version1_14 extends RegisterEvents implements Listener {
     private final EnchantControl enchantControl;
     private final EnchantHandler enchantHandler;
     private final SetupGUI setupGUI;
     private final Anvil anvil;
 
-    public Version1_12(EnchantControl enchantControl, EnchantHandler enchantHandler, SetupGUI setupGUI, Anvil anvil) {
+
+    public Version1_14(EnchantControl enchantControl, EnchantHandler enchantHandler, SetupGUI setupGUI, Anvil anvil) {
         this.enchantControl = enchantControl;
         this.enchantHandler = enchantHandler;
         this.setupGUI = setupGUI;

@@ -52,6 +52,9 @@ public class Version1_9 extends RegisterEvents implements Listener {
         }
         enchantHandler.checkItem(e.getInventory().getItem(0), null);
         enchantHandler.checkItem(e.getInventory().getItem(1), null);
+        if (!EnchantControl.setup || !EnchantControl.UNSAFE_ENCHANTS) {
+            return;
+        }
         e.setResult(anvil.getResultItem(e.getInventory().getItem(0), e.getInventory().getItem(1), e.getResult()));
     }
 }
