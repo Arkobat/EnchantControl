@@ -6,6 +6,8 @@ import com.gmail.arkobat.EnchantControl.GUIHandler.SetupGUI;
 import com.gmail.arkobat.EnchantControl.MessageChanger;
 import com.gmail.arkobat.EnchantControl.Utilities.GetEnchant;
 import com.gmail.arkobat.EnchantControl.Utilities.SendPlayerMsg;
+import net.md_5.bungee.api.ChatMessageType;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -23,7 +25,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Shared extends RegisterEvents implements Listener{
+public class Shared extends RegisterEvents implements Listener {
 
     private EnchantControl enchantControl;
     private EnchantHandler enchantHandler;
@@ -47,7 +49,7 @@ public class Shared extends RegisterEvents implements Listener{
             return;
         }
         Player p = e.getPlayer() instanceof Player ? e.getPlayer() : null;
-        if (enchantControl.VERSION == 1.08) {
+        if (EnchantControl.VERSION == 1.08) {
             enchantHandler.checkItem(e.getPlayer().getItemInHand(), p);
         } else {
             enchantHandler.checkItem(e.getPlayer().getInventory().getItemInMainHand(), p);
@@ -61,12 +63,26 @@ public class Shared extends RegisterEvents implements Listener{
             return;
         }
         Player p = e.getPlayer() instanceof Player ? e.getPlayer() : null;
-        if (enchantControl.VERSION == 1.08) {
+        if (EnchantControl.VERSION == 1.08) {
             enchantHandler.checkItem(e.getPlayer().getItemInHand(), p);
         } else {
             enchantHandler.checkItem(e.getPlayer().getInventory().getItemInMainHand(), p);
             enchantHandler.checkItem(e.getPlayer().getInventory().getItemInOffHand(), p);
         }
+    }
+
+    private void debugInvClick(Player p,
+                               Inventory inventory,
+                               ItemStack clicked,
+                               ClickType type) {
+        Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c§m---------------------------------------------");
+        Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c           Detected Inventory Click            ");
+        Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c Player = §b" + (p == null ? "Console" : p.getName()));
+        Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c Inventory = §b" + inventory.toString());
+        Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c Inventory Type = §b" + inventory.getType());
+        Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c Clicked item = §b" + (clicked == null ? "NULL" : clicked.toString()));
+        Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c Click type = §b" + type.name());
+        Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c§m---------------------------------------------");
     }
 
     @EventHandler
@@ -76,8 +92,15 @@ public class Shared extends RegisterEvents implements Listener{
         ItemStack clicked = e.getCurrentItem(); // The item that was clicked
         ClickType type = e.getClick(); // The button that was clicked
         String inventoryName;
+
         if (EnchantControl.VERSION >= 1.14) {
-            inventoryName = e.getView().getTitle();
+            try {
+                inventoryName = e.getView().getTitle();
+            } catch (IllegalStateException e1) {
+                //debugInvClick(p, inventory, clicked, type);
+                e1.printStackTrace();
+                return;
+            }
         } else {
             inventoryName = inventory.getName();
         }
@@ -86,7 +109,9 @@ public class Shared extends RegisterEvents implements Listener{
             int slot = e.getSlot();
             if (clicked != null && clicked.getType() != Material.AIR) {
                 enchantControl.onClick(inventory, clicked, type, p, slot);
-                if (p != null) {p.updateInventory();}
+                if (p != null) {
+                    p.updateInventory();
+                }
             }
             return;
         }

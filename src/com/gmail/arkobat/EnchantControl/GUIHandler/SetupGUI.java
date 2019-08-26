@@ -36,14 +36,16 @@ public class SetupGUI {
         defineActionItem();
         defineEnchantItem();
         defineBookItem();
-        defineUnsafeEnchantItem();
+        if (EnchantControl.VERSION > 1.08) {
+            defineUnsafeEnchantItem();
+        }
         defineSaveItem();
         defineMessageItems();
 
         definePickupItemEvent();
         defineInteractEvent();
         defineItemHeldEvent();
-        if (enchantControl.VERSION >= 1.09) {
+        if (EnchantControl.VERSION >= 1.09) {
             defineItemSwapEvent();
         }
         defineClickItemEvent();
@@ -108,7 +110,7 @@ public class SetupGUI {
     private void defineItemHeldEvent() {
         ItemStack itemStack = new ItemStack(XMaterial.COMPARATOR.parseItem());
         ItemMeta itemMeta = itemStack.getItemMeta();
-       itemMeta.setDisplayName("§6§lItem Held Event");
+        itemMeta.setDisplayName("§6§lItem Held Event");
 
         List<String> lore = new ArrayList<>();
         lore.add("§a This event triggers when a player");
@@ -135,7 +137,7 @@ public class SetupGUI {
     private void defineItemSwapEvent() {
         ItemStack itemStack = new ItemStack(XMaterial.COMPARATOR.parseItem());
         ItemMeta itemMeta = itemStack.getItemMeta();
-       itemMeta.setDisplayName("§6§lSwap Event");
+        itemMeta.setDisplayName("§6§lSwap Event");
 
         List<String> lore = new ArrayList<>();
         lore.add("§a This event triggers when a player");
@@ -162,7 +164,7 @@ public class SetupGUI {
     private void defineClickItemEvent() {
         ItemStack itemStack = new ItemStack(XMaterial.COMPARATOR.parseItem());
         ItemMeta itemMeta = itemStack.getItemMeta();
-       itemMeta.setDisplayName("§6§lInventory Click Event");
+        itemMeta.setDisplayName("§6§lInventory Click Event");
 
         List<String> lore = new ArrayList<>();
         lore.add("§a This event triggers when a player");
@@ -216,7 +218,7 @@ public class SetupGUI {
     private void defineAnvilEvent() {
         ItemStack itemStack = new ItemStack(XMaterial.COMPARATOR.parseItem());
         ItemMeta itemMeta = itemStack.getItemMeta();
-       itemMeta.setDisplayName("§6§lAnvil Event");
+        itemMeta.setDisplayName("§6§lAnvil Event");
 
         List<String> lore = new ArrayList<>();
         lore.add("§a This event triggers when a player");
@@ -348,9 +350,11 @@ public class SetupGUI {
         lore.add("§b Yes §c- §aEnchanted books will ");
         lore.add("§a lose illegal enchants stored");
         lore.add("§b No §c- §aBooks aren't effected");
-        lore.add("§a Make sure you don't return");
-        lore.add("§a as book in other settings,");
-        lore.add("§a if you choose yes");
+        //lore.add("§a Make sure you don't return");
+        //lore.add("§a as book in other settings,");
+        //lore.add("§a if you choose yes");
+        lore.add("§b Only §c- §aBooks are the only");
+        lore.add("§a thing affected");
         lore.add(" §c§m----------------------");
         lore.add(defineBookSetting());
         lore.add(" §c§m----------------------");
@@ -359,22 +363,19 @@ public class SetupGUI {
 
     private String defineBookSetting() {
         if (enchantControl.configContains("book")) {
-            if (enchantControl.getConfigBoolean("book")) {
+            if (enchantControl.getConfigString("book").equalsIgnoreCase("Yes")) {
                 EnchantControl.BOOK = "Yes";
-                EnchantControl.AFFECT_BOOKS = true;
                 return "     §a§lBook: §b§lYes";
-            } else if (!enchantControl.getConfigBoolean("book")) {
+            } else if (enchantControl.getConfigString("book").equalsIgnoreCase("No")) {
                 EnchantControl.BOOK = "No";
-                EnchantControl.AFFECT_BOOKS = false;
                 return "     §a§lBook: §b§lNo";
+            } else if (enchantControl.getConfigString("book").equalsIgnoreCase("Only")) {
+                EnchantControl.BOOK = "Only";
+                return "     §a§lBook: §b§lOnly";
             }
-        } else {
-            EnchantControl.AFFECT_BOOKS = false;
         }
         return "     §a§lBook: §b§lNot set";
     }
-
-
 
 
     private void defineUnsafeEnchantItem() {
@@ -451,7 +452,7 @@ public class SetupGUI {
             lore.add(" §aDefault prefix:");
             lore.add(" §3[§cEnchantControl§3]");
             lore.add(" §aYour prefix:");
-            lore.add(ChatColor.translateAlternateColorCodes('&'," &f" + defineMessageSetting("prefix")));
+            lore.add(ChatColor.translateAlternateColorCodes('&', " &f" + defineMessageSetting("prefix")));
             lore.add(" §c§m----------------------------");
         } else if (message.equals("canceled")) {
             lore.add(" §aThe message sent when the");
@@ -462,7 +463,7 @@ public class SetupGUI {
             lore.add(" §aDefault message:");
             lore.add(" §3Couldn't enchant %item%. Some enchants where illegal");
             lore.add(" §aYour message:");
-            lore.add(ChatColor.translateAlternateColorCodes('&'," &F" + defineMessageSetting("canceled")));
+            lore.add(ChatColor.translateAlternateColorCodes('&', " &F" + defineMessageSetting("canceled")));
             lore.add(" §c§m----------------------------");
         } else if (message.equals("remove")) {
             lore.add(" §aThe message sent when the plugin");
@@ -473,7 +474,7 @@ public class SetupGUI {
             lore.add(" §aDefault message:");
             lore.add(" §3Removed %enchantName% from %item%");
             lore.add(" §aYour message:");
-            lore.add(ChatColor.translateAlternateColorCodes('&'," &f" + defineMessageSetting("remove")));
+            lore.add(ChatColor.translateAlternateColorCodes('&', " &f" + defineMessageSetting("remove")));
             lore.add(" §c§m----------------------------");
         }
         return lore;

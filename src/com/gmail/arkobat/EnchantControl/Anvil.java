@@ -42,7 +42,6 @@ public class Anvil {
                 item1.getItemMeta().setLore(im.getLore());
             }
         }
-
         result = addEnchants(result, getResultEnchants(item1, item2));
         enchantHandler.checkItem(result, null);
 
@@ -103,6 +102,10 @@ public class Anvil {
                 if (!enchants.containsKey(enchant)) {
                     enchants.put(enchant, item2Enchants.get(enchant));
                 }
+            } else {
+                if (enchants.containsKey(enchant)) {
+                    enchants.remove(enchant);
+                }
             }
         }
         return enchants;
@@ -133,6 +136,9 @@ public class Anvil {
     }
 
     private ItemStack addEnchants(ItemStack item, Map<Enchantment, Integer> enchants) {
+        if (item == null || item.getType() == Material.AIR) {
+            return item;
+        }
         if (item.getType() == XMaterial.ENCHANTED_BOOK.parseMaterial()) {
             EnchantmentStorageMeta meta = (EnchantmentStorageMeta) item.getItemMeta();
             for (Enchantment enchant : enchants.keySet()) {

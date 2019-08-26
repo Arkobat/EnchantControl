@@ -26,11 +26,12 @@ public class EnchantControl extends JavaPlugin {
 
     // Settings
     public String GUIIdentifier = "§¾§¯§¿"; // Unique characters to identify an inventory from this plugin
-    public static Boolean AFFECT_BOOKS; // Determine if enchanted books should be affected
+    //public static Boolean AFFECT_BOOKS; // Determine if enchanted books should be affected
     public static Boolean UNSAFE_ENCHANTS; // Check if unsafe enchants can be created in an anvil
     public static String ACTION;
     public static String ENCHANT;
     public static String BOOK;
+    public static boolean MENDING_INFINITY;
 
     public static Boolean setup; // If the first time setup is done
 
@@ -74,7 +75,16 @@ public class EnchantControl extends JavaPlugin {
 
         saveDefaultConfig();
         loadDefaultConfig();
-        Bukkit.getServer().getLogger().info("EnchantControl Enabled");
+
+        Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c§m---------------------------------");
+        Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c        §3[§cEnchantControl§3]");
+        Bukkit.getConsoleSender().sendMessage("§3[§cEC§3]");
+        Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c      EnchantControl Enabled");
+        Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c       Server Version: " + VERSION);
+        Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c      Plugin Version: " + this.getDescription().getVersion());
+        Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c                                               ");
+        Bukkit.getConsoleSender().sendMessage("§3[§cEC§3] §c§m------------------------------------------");
+        Bukkit.getServer().getLogger().info("");
     }
 
     @Override
@@ -109,6 +119,7 @@ public class EnchantControl extends JavaPlugin {
         setup = getConfig().getBoolean("setup");
         mainGUI.defineInventory();
         setupGUI.defineInventory();
+        MENDING_INFINITY = getConfig().contains("enchants.70.infinity") ? getConfigBoolean("enchants.70.infinity") : false;
     }
 
     public String getConfigString(String string) {

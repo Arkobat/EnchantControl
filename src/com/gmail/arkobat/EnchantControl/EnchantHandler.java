@@ -1,12 +1,8 @@
 package com.gmail.arkobat.EnchantControl;
 
-import com.gmail.arkobat.EnchantControl.GUIHandler.MainGUI;
-
-import com.gmail.arkobat.EnchantControl.GUIHandler.SetupGUI;
 import com.gmail.arkobat.EnchantControl.Utilities.GetEnchant;
 import com.gmail.arkobat.EnchantControl.Utilities.SendPlayerMsg;
 import org.bukkit.Material;
-import org.bukkit.SkullType;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -32,20 +28,22 @@ public class EnchantHandler {
     }
 
     public boolean checkItem(ItemStack itemStack, Player p) {
-        if (itemStack != null && itemStack.getType() != Material.AIR) {
-            if (!check64(itemStack)) {
-                if (itemStack.getType() == XMaterial.ENCHANTED_BOOK.parseMaterial()) {
-                    return checkBook(itemStack, p) || checkBookMaxLvl(itemStack, p);
-                }
-                if (itemStack.hasItemMeta() && itemStack.getItemMeta().hasEnchants()) {
-                    return checkDisabled(itemStack, p) || checkMaxLvl(itemStack, p);
-                }
-            }
+        if (itemStack == null || itemStack.getType() == Material.AIR) {
+            return false;
+        }
+        if (check64(itemStack)) {
+            return false;
+        }
+        if (itemStack.getType() == XMaterial.ENCHANTED_BOOK.parseMaterial()) {
+            return checkBook(itemStack, p) || checkBookMaxLvl(itemStack, p);
+        }
+        if (itemStack.hasItemMeta() && itemStack.getItemMeta().hasEnchants()) {
+            return checkDisabled(itemStack, p) || checkMaxLvl(itemStack, p);
         }
         return false;
     }
 
-    private boolean check64 (ItemStack itemStack) {
+    private boolean check64(ItemStack itemStack) {
         /*
         Itemstack skull = new ItemStack(Material.SKULL_ITEM, getAmount(), (short) SkullType.PLAYER.ordinal());
          */
@@ -78,11 +76,14 @@ public class EnchantHandler {
             }
         }
         return enchantControl.excluded.contains(newItemStack.toString());
-      //  return true;
+        //  return true;
     }
 
     private boolean checkDisabled(ItemStack itemStack, Player p) {
         if (EnchantControl.ACTION == null) {
+            return false;
+        }
+        if (EnchantControl.BOOK.equalsIgnoreCase("Only")) {
             return false;
         }
         List<Enchantment> toRemove = new ArrayList<>();
@@ -142,17 +143,17 @@ public class EnchantHandler {
     }
 
     private boolean checkBookMaxLvl(ItemStack book, Player p) {
-        if (EnchantControl.AFFECT_BOOKS) {
+        if (EnchantControl.BOOK.equalsIgnoreCase("Yes") || EnchantControl.BOOK.equalsIgnoreCase("Only")) {
             if (book.hasItemMeta()) {
                 EnchantmentStorageMeta meta = (EnchantmentStorageMeta) book.getItemMeta();
                 HashMap<Enchantment, Integer> toSet = new HashMap<>();
                 for (Enchantment enchantment : meta.getStoredEnchants().keySet()) {
-                        if (Boolean.valueOf(enchantControl.enchantConfigSection.get(getEnchant.getIDSting(enchantment) + ".custom"))) {
-                            if (enchantControl.enchantConfigSection.containsKey(getEnchant.getIDSting(enchantment) + ".maxLevel")) {
-                                int maxLevel = Integer.parseInt(enchantControl.enchantConfigSection.get(getEnchant.getIDSting(enchantment) + ".maxLevel"));
-                                if (meta.getStoredEnchantLevel(enchantment) > maxLevel) {
-                                    toSet.put(enchantment, maxLevel);
-                                }
+                    if (Boolean.valueOf(enchantControl.enchantConfigSection.get(getEnchant.getIDSting(enchantment) + ".custom"))) {
+                        if (enchantControl.enchantConfigSection.containsKey(getEnchant.getIDSting(enchantment) + ".maxLevel")) {
+                            int maxLevel = Integer.parseInt(enchantControl.enchantConfigSection.get(getEnchant.getIDSting(enchantment) + ".maxLevel"));
+                            if (meta.getStoredEnchantLevel(enchantment) > maxLevel) {
+                                toSet.put(enchantment, maxLevel);
+                            }
                         }
                     }
                 }
@@ -174,7 +175,7 @@ public class EnchantHandler {
     }
 
     private boolean checkBook(ItemStack book, Player p) {
-        if (EnchantControl.AFFECT_BOOKS) {
+        if (EnchantControl.BOOK.equalsIgnoreCase("Yes") || EnchantControl.BOOK.equalsIgnoreCase("Only")) {
             if (book.hasItemMeta()) {
                 EnchantmentStorageMeta meta = (EnchantmentStorageMeta) book.getItemMeta();
                 List<Enchantment> toRemove = new ArrayList<>();

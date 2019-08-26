@@ -1,5 +1,6 @@
 package com.gmail.arkobat.EnchantControl.EventHandler.InventoryClick;
 
+import com.gmail.arkobat.EnchantControl.EnchantControl;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -31,11 +32,13 @@ public class ClickMendingGUI {
                 lore.set(lore.size()-2, "§b Left-click §ato §2enable");
                 check.enchantControl.enchantConfigSection.remove("70.infinity");
                 check.enchantControl.clearConfigPath("enchants." +  "70.infinity");
+                EnchantControl.MENDING_INFINITY = false;
             } else {
                 lore.set(lore.size()-3, "§a §lStatus: §2§lEnabled");
                 lore.set(lore.size()-2, "§b Left-click §ato §cdisable");
                 check.enchantControl.enchantConfigSection.put("70.infinity", String.valueOf(true));
                 check.enchantControl.writeToConfig("enchants." + "70.infinity", true);
+                EnchantControl.MENDING_INFINITY = true;
             }
             itemMeta.setLore(lore);
             clicked.setItemMeta(itemMeta);

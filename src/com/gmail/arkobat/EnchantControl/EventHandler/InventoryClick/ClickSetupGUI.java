@@ -106,11 +106,12 @@ public class ClickSetupGUI {
         if (actionLine.contains("Yes")) {
             lore.set(lore.size() - 2, "     §a§lBook: §b§lNo");
             EnchantControl.BOOK = "No";
-            EnchantControl.AFFECT_BOOKS = false;
+        } else if (actionLine.contains("No")) {
+            lore.set(lore.size() - 2, "     §a§lBook: §b§lOnly");
+            EnchantControl.BOOK = "Only";
         } else {
             lore.set(lore.size() - 2, "     §a§lBook: §b§lYes");
             EnchantControl.BOOK = "Yes";
-            EnchantControl.AFFECT_BOOKS = true;
         }
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setLore(lore);
