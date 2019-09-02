@@ -10,14 +10,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MendingGUI {
-    EnchantControl enchantControl;
+    private final EnchantControl enchantControl;
 
     public MendingGUI(EnchantControl enchantControl ) {
         this.enchantControl = enchantControl;
     }
 
     public Inventory applyMendingSettings(Inventory inv) {
-        if (enchantControl.VERSION >= 1.11) {
+        if (EnchantControl.VERSION >= 1.11) {
             inv.setItem(1, defineInfinityCapability());
         }
         return inv;

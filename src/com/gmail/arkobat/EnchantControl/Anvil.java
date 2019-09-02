@@ -12,7 +12,9 @@ import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.Repairable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Anvil {
@@ -27,6 +29,7 @@ public class Anvil {
     }
 
     public ItemStack getResultItem(ItemStack item1, ItemStack item2, ItemStack result) {
+        result = checkMendingInfinity(item1, item2, result);
         if (!EnchantControl.setup || !EnchantControl.UNSAFE_ENCHANTS) {
             return result;
         }
@@ -151,6 +154,37 @@ public class Anvil {
             item.addUnsafeEnchantment(enchant, enchants.get(enchant));
         }
         return item;
+    }
+
+    public ItemStack checkMendingInfinity(ItemStack item1, ItemStack item2, ItemStack result) {
+        if (EnchantControl.VERSION < 1.11) {
+            return result;
+        }
+        if (item1 == null || item2 == null) {
+            return result;
+        }
+        if (item1.getType() != Material.BOW && (item2.getType() != Material.BOW || item2.getType() != Material.ENCHANTED_BOOK)) {
+            return result;
+        }
+        if (!enchantControl.enchantConfigSection.containsKey("70.infinity")) {
+            return result;
+        }
+        if (!Boolean.valueOf(enchantControl.enchantConfigSection.get("70.infinity"))) {
+            return result;
+        }
+        Map<Enchantment, Integer> enchant1 = item1.getEnchantments();
+        Map<Enchantment, Integer> enchant2;
+        if (item2.getType() == XMaterial.ENCHANTED_BOOK.parseMaterial()) {
+            enchant2 = item2.getItemMeta().getEnchants();
+        } else {
+            enchant2 = item2.getEnchantments();
+        }
+        if (enchant1.containsKey(Enchantment.ARROW_INFINITE) && enchant2.containsKey(Enchantment.MENDING)) {
+            result.addUnsafeEnchantment(Enchantment.MENDING, 1);
+        } else if (enchant1.containsKey(Enchantment.MENDING) && enchant2.containsKey(Enchantment.ARROW_INFINITE)) {
+            result.addUnsafeEnchantment(Enchantment.ARROW_INFINITE, 1);
+        }
+        return result;
     }
 
 }

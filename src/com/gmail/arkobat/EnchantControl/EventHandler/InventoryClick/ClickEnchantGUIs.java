@@ -42,7 +42,7 @@ public class ClickEnchantGUIs {
         } else {
             maxLevel = Integer.parseInt(lore.get(lore.size() - 2).replace("§a Current max level: §b§l", ""));
         }
-        if (clickType  == ClickType.LEFT) {
+        if (clickType == ClickType.LEFT) {
             if (maxLevel < 999) {
                 maxLevel = (maxLevel < 1) ? 1 : maxLevel + 1;
             }
@@ -66,11 +66,11 @@ public class ClickEnchantGUIs {
 
         itemMeta.setLore(lore);
         clicked.setItemMeta(itemMeta);
-       // check.mainGUI.inventory.setItem(slot, clicked);
+        // check.mainGUI.inventory.setItem(slot, clicked);
     }
 
     private String getId(Player p) {
-        String[]idSplit = p.getOpenInventory().getTitle().split("§¾§¯§¿§_");
+        String[] idSplit = p.getOpenInventory().getTitle().split("§¾§¯§¿§_");
         int id = Integer.parseInt(idSplit[1].replaceAll("§", ""));
         return String.valueOf(id);
     }

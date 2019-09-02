@@ -4,6 +4,7 @@ import com.gmail.arkobat.EnchantControl.Anvil;
 import com.gmail.arkobat.EnchantControl.EnchantControl;
 import com.gmail.arkobat.EnchantControl.EnchantHandler;
 import com.gmail.arkobat.EnchantControl.GUIHandler.SetupGUI;
+import com.gmail.arkobat.EnchantControl.Log;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -47,14 +48,11 @@ public class Version1_12 extends RegisterEvents implements Listener {
 
     @EventHandler
     public void onAnvilUse(PrepareAnvilEvent e) {
-        if (!anvilEvent) {
+        if (!EnchantControl.setup || !anvilEvent) {
             return;
         }
         enchantHandler.checkItem(e.getInventory().getItem(0), null);
         enchantHandler.checkItem(e.getInventory().getItem(1), null);
-        if (!EnchantControl.setup || !EnchantControl.UNSAFE_ENCHANTS) {
-            return;
-        }
         e.setResult(anvil.getResultItem(e.getInventory().getItem(0), e.getInventory().getItem(1), e.getResult()));
     }
 
