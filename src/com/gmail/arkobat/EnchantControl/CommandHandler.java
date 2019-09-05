@@ -36,7 +36,7 @@ public class CommandHandler implements CommandExecutor {
             if (args.length >= 1 && withArgs(args, p)) {
                 return true;
             }
-            if (!enchantControl.setup) {
+            if (!EnchantControl.setup) {
                 p.openInventory(setupGUI.inventory);
             } else {
                 p.openInventory(mainGUI.inventory);
@@ -47,7 +47,7 @@ public class CommandHandler implements CommandExecutor {
 
     private boolean withArgs(String[] args, Player p) {
         if (args[0].equalsIgnoreCase("debug")) {
-            p.sendMessage("Server VERSION " + enchantControl.VERSION);
+            p.sendMessage("Server VERSION " + EnchantControl.VERSION);
             return true;
         }
         if (args[0].equalsIgnoreCase("writeFullConfig")) {
@@ -69,7 +69,7 @@ public class CommandHandler implements CommandExecutor {
 
     private boolean exclude(Player p) {
         ItemStack itemStack;
-        if (enchantControl.VERSION == 1.08) {
+        if (EnchantControl.VERSION == 1.08) {
             itemStack = p.getItemInHand();
         } else {
             itemStack = p.getInventory().getItemInMainHand();

@@ -2,6 +2,7 @@ package com.gmail.arkobat.EnchantControl;
 
 import com.gmail.arkobat.EnchantControl.GUIHandler.SetupGUI;
 import com.gmail.arkobat.EnchantControl.Utilities.SendPlayerMsg;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -35,7 +36,8 @@ public class MessageChanger {
                         setupGUI.defineMessageItems();
                         enchantControl.msgAdd.remove(string);
                         sendPlayerMsg.sendPlayerMsg(p, "§3Successfully changed the prefix");
-                        p.openInventory(setupGUI.inventory);
+                        //p.openInventory(setupGUI.inventory);
+                        Bukkit.getScheduler().callSyncMethod(enchantControl, () -> p.openInventory(setupGUI.inventory));
                         return true;
                     case "enchantCancel":
                         enchantControl.setMessage("enchantCancel", message);
@@ -43,7 +45,8 @@ public class MessageChanger {
                         setupGUI.defineMessageItems();
                         enchantControl.msgAdd.remove(string);
                         sendPlayerMsg.sendPlayerMsg(p, "§3Successfully changed the message");
-                        p.openInventory(setupGUI.inventory);
+                        //p.openInventory(setupGUI.inventory);
+                        Bukkit.getScheduler().callSyncMethod(enchantControl, () -> p.openInventory(setupGUI.inventory));
                         return true;
                     case "removedEnchant":
                         enchantControl.setMessage("removedEnchant", message);
@@ -51,7 +54,8 @@ public class MessageChanger {
                         setupGUI.defineMessageItems();
                         enchantControl.msgAdd.remove(string);
                         sendPlayerMsg.sendPlayerMsg(p, "§3Successfully changed the message");
-                        p.openInventory(setupGUI.inventory);
+                        //p.openInventory(setupGUI.inventory);
+                        Bukkit.getScheduler().callSyncMethod(enchantControl, () -> p.openInventory(setupGUI.inventory));
                         return true;
                 }
                 return true;
