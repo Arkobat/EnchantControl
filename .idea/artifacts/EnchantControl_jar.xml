@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="jar" name="EnchantControl:jar">
-    <output-path>D:/Minecraft/Servers/Spigot 1.12/plugins</output-path>
+    <output-path>D:/Minecraft/Servers/Spigot 1.14/plugins</output-path>
     <root id="archive" name="EnchantControl.jar">
       <element id="module-output" name="EnchantControl" />
     </root>

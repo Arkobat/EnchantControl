@@ -3,18 +3,12 @@ package com.gmail.arkobat.EnchantControl;
 import com.gmail.arkobat.EnchantControl.Utilities.GetEnchant;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.Repairable;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Anvil {
@@ -169,7 +163,7 @@ public class Anvil {
         if (!enchantControl.enchantConfigSection.containsKey("70.infinity")) {
             return result;
         }
-        if (!Boolean.valueOf(enchantControl.enchantConfigSection.get("70.infinity"))) {
+        if (!Boolean.parseBoolean(enchantControl.enchantConfigSection.get("70.infinity"))) {
             return result;
         }
         Map<Enchantment, Integer> enchant1 = item1.getEnchantments();
@@ -178,6 +172,14 @@ public class Anvil {
             enchant2 = item2.getItemMeta().getEnchants();
         } else {
             enchant2 = item2.getEnchantments();
+        }
+        if (result.getType() == Material.AIR) {
+            result = new ItemStack(item1.getType());
+            result.setAmount(item1.getAmount());
+            result.setData(item1.getData());
+            if (item1.hasItemMeta()) {
+                result.setItemMeta(item1.getItemMeta());
+            }
         }
         if (enchant1.containsKey(Enchantment.ARROW_INFINITE) && enchant2.containsKey(Enchantment.MENDING)) {
             result.addUnsafeEnchantment(Enchantment.MENDING, 1);

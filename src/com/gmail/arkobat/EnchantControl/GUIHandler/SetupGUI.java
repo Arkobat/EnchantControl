@@ -38,6 +38,8 @@ public class SetupGUI {
         defineBookItem();
         if (EnchantControl.VERSION > 1.08) {
             defineUnsafeEnchantItem();
+        } else {
+            EnchantControl.UNSAFE_ENCHANTS = false;
         }
         defineSaveItem();
         defineMessageItems();
